@@ -1,0 +1,11 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Theme.ContactUs" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/orange_500</item>
+        <item name="colorPrimaryDark">@color/orange_700</item>
+    </style>
+    <style name="Theme2" parent="Theme.ContactUs">
+        <item name="android:radius">35dp</item>
+    </style>
+</resources>

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".feature.main.MainActivity">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:background="@color/orange_500">
+
+            <TextView
+                android:id="@+id/toolbar_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:textColor="@android:color/white"
+                android:layout_margin="8dp"
+                android:fontFamily="@font/iranyekanbold"
+                android:textSize="18sp"
+                android:text="در حال اتصال ..."/>
+            <ImageView
+                android:id="@+id/searchIcon"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                app:queryHint="MOhsen"
+                android:background="@null"
+                android:layout_marginLeft="8dp"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_baseline_search_24"/>
+            <EditText
+                android:id="@+id/search_query_ed"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@null"
+                android:layout_toRightOf="@id/searchIcon"
+                android:layout_toLeftOf="@id/toolbar_title"
+                android:layout_marginLeft="16dp"
+                android:visibility="invisible"
+                android:gravity="right|center"
+                android:maxLines="1"
+                android:maxLength="64"
+                android:textSize="14sp"
+                android:textColorHint="@android:color/white"
+                android:textColor="@android:color/white"
+                android:fontFamily="@font/iranyekanbold"
+                android:hint="متن مورد جستجو را اینجا وارد کنید ..." />
+
+        </RelativeLayout>
+    </com.google.android.material.appbar.AppBarLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/main_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/main_tickets_rv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/main_add_New_Ticket_floatingBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentBottom="true"
+            app:useCompatPadding="true"
+
+            android:src="@drawable/ic_baseline_add_24"
+            app:backgroundTint="@color/orange_500"
+            app:tint="@color/white"
+            android:tint="@android:color/white"
+            app:fabSize="normal"/>
+    </RelativeLayout>
+
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
