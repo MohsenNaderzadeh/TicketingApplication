@@ -10,9 +10,9 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 
 import com.example.contactus.R;
-import com.example.contactus.feature.data.Ticket;
 import com.example.contactus.feature.base.RvAdapter;
 import com.example.contactus.feature.base.RvViewHolder;
+import com.example.contactus.feature.data.Ticket;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +24,7 @@ public class TicketListAdapter extends RvAdapter<Ticket, TicketListAdapter.Ticke
         return filteredList;
     }
 
-    private List<Ticket> filteredList=new ArrayList<>();
+    private final List<Ticket> filteredList = new ArrayList<>();
 
     public TicketListAdapter(List<Ticket> items) {
         super(items);
@@ -80,20 +80,19 @@ public class TicketListAdapter extends RvAdapter<Ticket, TicketListAdapter.Ticke
 
     }
 
-    public class TicketListViewHolder extends RvViewHolder<Ticket>
-    {
-        private TextView ticket_short_title_tv;
-        private  TextView ticket_title;
-        private  TextView ticket_desc_tv;
-        private TextView ticket_badage_tv;
+    public class TicketListViewHolder extends RvViewHolder<Ticket> {
+        private final TextView ticket_short_title_tv;
+        private final TextView ticket_title;
+        private final TextView ticket_desc_tv;
+        private final TextView ticket_badage_tv;
         private CardView ticket_card;
+
         public TicketListViewHolder(@NonNull View itemView) {
             super(itemView);
-            ticket_short_title_tv=itemView.findViewById(R.id.ticket_short_title_tv);
-            ticket_title=itemView.findViewById(R.id.ticket_title);
-            ticket_desc_tv=itemView.findViewById(R.id.ticket_desc_tv);
-            ticket_badage_tv=itemView.findViewById(R.id.ticket_badage_tv);
-            ticket_card=itemView.findViewById(R.id.ticket_card);
+            ticket_short_title_tv = itemView.findViewById(R.id.ticket_short_title_tv);
+            ticket_title = itemView.findViewById(R.id.ticket_title);
+            ticket_desc_tv = itemView.findViewById(R.id.ticket_desc_tv);
+            ticket_badage_tv = itemView.findViewById(R.id.ticket_badage_tv);
         }
 
 
@@ -102,10 +101,7 @@ public class TicketListAdapter extends RvAdapter<Ticket, TicketListAdapter.Ticke
             ticket_short_title_tv.setText(item.getTitle().substring(0,2));
             ticket_title.setText(item.getTitle());
             ticket_desc_tv.setText(item.getDescription());
-            ticket_card.setOnClickListener(view -> {
 
-                    onRvItemsClickListener.OnItemClicked(item,getAdapterPosition());
-            });
         }
     }
 

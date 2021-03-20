@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:id="@+id/ticket_card"
     xmlns:tools="http://schemas.android.com/tools"
-    >
-<RelativeLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:background="@drawable/backgroundcard"
     android:padding="8dp">
+
     <TextView
         android:id="@+id/ticket_short_title_tv"
         android:layout_marginTop="8dp"
@@ -69,8 +67,6 @@
         android:gravity="center"
         android:textColor="@android:color/white"
         android:text="3"/>
+
+
 </RelativeLayout>
-
-
-
-</androidx.cardview.widget.CardView>

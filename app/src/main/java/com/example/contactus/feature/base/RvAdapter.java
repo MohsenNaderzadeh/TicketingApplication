@@ -8,12 +8,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-public abstract class RvAdapter<T,E extends RvViewHolder<T>> extends RecyclerView.Adapter<E> implements Filterable {
-    protected List<T> items;
-    protected List<T> filteredList;
+public abstract class RvAdapter<T, E extends RvViewHolder<T>> extends RecyclerView.Adapter<E> implements Filterable {
+    private List<T> items;
+    private List<T> filteredList;
     protected List<T> main_items;
     private Filter filter;
-
 
 
     public List<T> getFilteredList() {
