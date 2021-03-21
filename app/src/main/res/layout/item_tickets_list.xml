@@ -14,6 +14,7 @@
         android:layout_width="64dp"
         android:layout_height="64dp"
         android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
         android:fontFamily="@font/iranyekanbold"
         android:background="@drawable/background_tickets_title_tv"
         android:textColor="@color/white"
@@ -47,26 +48,40 @@
         tools:text="متن آخرین پیام تیکت متن آخرین پیام تیکت متن آخرین پیام تیکت"
         android:layout_marginBottom="8dp"
         android:layout_marginRight="8dp"
+
         android:textSize="14sp"
         android:layout_marginLeft="24dp"
         android:layout_alignLeft="@id/ticket_badage_tv"
         android:layout_toLeftOf="@id/ticket_short_title_tv"
         android:fontFamily="@font/iranyekanbold"
+
         />
     <TextView
         android:id="@+id/ticket_badage_tv"
         android:layout_width="25dp"
         android:layout_height="25dp"
-        android:visibility="gone"
+        android:layout_marginRight="8dp"
         android:background="@drawable/background_tickets_title_tv"
         android:layout_centerVertical="true"
         android:layout_marginTop="8dp"
         android:layout_marginLeft="4dp"
         android:layout_marginBottom="8dp"
+        android:visibility="visible"
         android:textSize="12sp"
         android:gravity="center"
         android:textColor="@android:color/white"
-        android:text="3"/>
+        android:text="3" />
+
+    <TextView
+        android:id="@+id/ticket_status_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ticket_desc_tv"
+        android:layout_toLeftOf="@id/ticket_short_title_tv"
+        android:fontFamily="@font/iranyekanbold"
+        android:text="وضعیت تیکت:"
+
+        />
 
 
 </RelativeLayout>

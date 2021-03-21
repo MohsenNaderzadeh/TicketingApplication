@@ -87,6 +87,7 @@ public class TicketListAdapter extends RvAdapter<Ticket, TicketListAdapter.Ticke
         private final TextView ticket_badage_tv;
         private CardView ticket_card;
 
+        //TODO:add TextView decleration for status of ticket later and use PlaceHolder for putting status ...
         public TicketListViewHolder(@NonNull View itemView) {
             super(itemView);
             ticket_short_title_tv = itemView.findViewById(R.id.ticket_short_title_tv);

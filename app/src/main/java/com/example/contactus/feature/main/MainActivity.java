@@ -58,7 +58,6 @@ public class MainActivity extends ObserverActivity implements OnRvItemsClickList
     public void setUpViews() {
         main_tickets_rv = findViewById(R.id.main_tickets_rv);
         main_add_New_Ticket_floatingBtn = findViewById(R.id.main_add_New_Ticket_floatingBtn);
-        main_add_New_Ticket_floatingBtn.bringToFront();
         searchIcon = findViewById(R.id.searchIcon);
         search_query_ed = findViewById(R.id.search_query_ed);
         toolbar_title = findViewById(R.id.toolbar_title);

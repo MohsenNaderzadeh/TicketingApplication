@@ -7,12 +7,12 @@ public class DataFakeGenerator {
 
 
     public static List<Ticket> getTicketsList(){
-        List<Ticket> tickets=new ArrayList<>();
-        tickets.add(new Ticket(1,"تست","سمیاد"));
-        tickets.add(new Ticket(2,"ناد","ریست رمز"));
-        tickets.add(new Ticket(3,"نمره","سمیاد"));
-        tickets.add(new Ticket(4,"درس","سمیاد"));
-        tickets.add(new Ticket(5,"نظام وظیفه","سمیاد"));
+        List<Ticket> tickets = new ArrayList<>();
+        tickets.add(new Ticket(1, "تست", "سمیاد", "در حال بررسی"));
+        tickets.add(new Ticket(2, "ناد", "ریست رمز", "در حال بررسی"));
+        tickets.add(new Ticket(3, "نمره", "سمیاد", "در حال بررسی"));
+        tickets.add(new Ticket(4, "درس", "سمیاد", "در حال بررسی"));
+        tickets.add(new Ticket(5, "نظام وظیفه", "سمیاد", "در حال بررسی"));
 
         return tickets;
 

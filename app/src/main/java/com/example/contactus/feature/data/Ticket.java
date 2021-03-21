@@ -4,11 +4,21 @@ public class Ticket {
     private int id;
     private String title;
     private String description;
+    private String status;
 
-    public Ticket(int id, String title, String description) {
+    public Ticket(int id, String title, String description, String status) {
         this.id = id;
         this.title = title;
         this.description = description;
+        this.status = status;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public int getId() {
