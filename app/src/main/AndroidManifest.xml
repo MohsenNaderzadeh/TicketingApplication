@@ -12,7 +12,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="false"
         android:theme="@style/Theme.ContactUs">
-        <activity android:name=".feature.chat.ChatActivity"></activity>
+        <activity
+            android:name=".feature.chat.ChatActivity"
+            android:windowSoftInputMode="adjustResize"></activity>
 
         <receiver android:name=".feature.receviers.InternetConnectionBroadCastReciever" />
 

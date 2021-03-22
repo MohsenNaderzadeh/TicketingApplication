@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:maxWidth="50dp">
+
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true">
+
+        <TextView
+            android:id="@+id/UserChat_text_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:background="@drawable/background_chat_worker"
+            android:fontFamily="@font/iranyekanbold"
+            android:maxWidth="350dp"
+            android:padding="8dp"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            tools:text="سلام وقت بخیر سلام وقت بخیر سلام وقت بخیر سلام وقت بخیر سلام وقت بخیر" />
+    </RelativeLayout>
+
+
+</RelativeLayout>

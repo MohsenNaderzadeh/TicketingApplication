@@ -1,5 +1,6 @@
 package com.example.contactus.feature.main;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
@@ -8,7 +9,6 @@ import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -19,6 +19,7 @@ import com.example.contactus.feature.base.MyAnimationListener;
 import com.example.contactus.feature.base.MyTextWatcher;
 import com.example.contactus.feature.base.ObserverActivity;
 import com.example.contactus.feature.base.OnRvItemsClickListener;
+import com.example.contactus.feature.chat.ChatActivity;
 import com.example.contactus.feature.data.DataFakeGenerator;
 import com.example.contactus.feature.data.MenuItem;
 import com.example.contactus.feature.data.Ticket;
@@ -26,9 +27,6 @@ import com.example.contactus.feature.eventbusevents.ConnectedInternet;
 import com.example.contactus.feature.eventbusevents.DisConnectedInternet;
 import com.example.contactus.feature.main.adapter.NavigationMenuListAdapter;
 import com.example.contactus.feature.main.adapter.TicketListAdapter;
-
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,6 +44,8 @@ public class MainActivity extends ObserverActivity implements OnRvItemsClickList
     private boolean isInSearchMode = false;
     private View main_navigation_ic;
     private DrawerLayout main_drawer_layout;
+
+    public static final String EXTRA_KEY_TICKET_TO_CHAT = "ticket_to_chat";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -132,7 +132,9 @@ public class MainActivity extends ObserverActivity implements OnRvItemsClickList
 
     @Override
     public void OnItemClicked(Ticket item, int position) {
-        Toast.makeText(MainActivity.this, item.getTitle(), Toast.LENGTH_LONG).show();
+        Intent intent = new Intent(MainActivity.this, ChatActivity.class);
+        intent.putExtra(EXTRA_KEY_TICKET_TO_CHAT, item);
+        startActivity(intent);
     }
 
     @Override
@@ -168,17 +170,18 @@ public class MainActivity extends ObserverActivity implements OnRvItemsClickList
 
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
+
+    @Override
     public void setTextofToolbar(ConnectedInternet connectedInternet) {
+        super.setTextofToolbar(connectedInternet);
         updateToolbarText("دانشجویار");
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
+    @Override
     public void setTextofToolbar(DisConnectedInternet disConnectedInternet) {
+        super.setTextofToolbar(disConnectedInternet);
         updateToolbarText("در حال اتصال ...");
-
     }
-
 
     private void updateToolbarText(String title) {
         toolbar_title.setText(title);

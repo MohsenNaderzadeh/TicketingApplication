@@ -16,7 +16,7 @@
             android:background="@color/orange_500">
 
             <ImageView
-                android:id="@+id/main_hambergur_ic"
+                android:id="@+id/main_hambergur_back_ic"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_alignParentRight="true"
@@ -30,7 +30,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="4dp"
-                android:layout_toLeftOf="@id/main_hambergur_ic"
+                android:layout_toLeftOf="@id/main_hambergur_back_ic"
                 android:ellipsize="end"
                 android:fontFamily="@font/iranyekanbold"
                 android:maxLength="35"
@@ -72,7 +72,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
-                android:layout_marginBottom="8dp"
+                android:layout_marginBottom="4dp"
                 android:orientation="horizontal">
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -88,6 +88,7 @@
                     app:tint="@color/white" />
 
                 <EditText
+                    android:id="@+id/chat_user_message_ed"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:layout_centerInParent="true"
@@ -97,6 +98,9 @@
                     android:layout_toLeftOf="@id/chat_send_message_iv"
                     android:background="@drawable/background_chat_ed"
                     android:fontFamily="@font/iranyekanbold"
+                    android:drawableLeft="@drawable/ic_baseline_attach_file_24"
+                    android:gravity="right|center"
+                    android:textSize="16dp"
                     android:hint="متن تیکت"
                     android:padding="8dp" />
 
@@ -108,16 +112,20 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_above="@id/chat_message_rl"
-                android:visibility="gone" />
+                android:layoutDirection="rtl"
+                android:visibility="visible" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:id="@+id/chat_ticketList_emptyState_tv"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:background="@drawable/background_chat_empty_state_tv"
                 android:fontFamily="@font/iranyekanbold"
                 android:padding="8dp"
                 android:text="پیامی یافت نشد"
+                android:gravity="center"
+                android:visibility="gone"
                 android:textColor="@android:color/white"
                 android:textSize="14sp" />
 

@@ -7,7 +7,6 @@ import android.widget.Filter;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
 
 import com.example.contactus.R;
 import com.example.contactus.feature.base.RvAdapter;
@@ -85,7 +84,7 @@ public class TicketListAdapter extends RvAdapter<Ticket, TicketListAdapter.Ticke
         private final TextView ticket_title;
         private final TextView ticket_desc_tv;
         private final TextView ticket_badage_tv;
-        private CardView ticket_card;
+        private final View ticket_card;
 
         //TODO:add TextView decleration for status of ticket later and use PlaceHolder for putting status ...
         public TicketListViewHolder(@NonNull View itemView) {
@@ -94,14 +93,17 @@ public class TicketListAdapter extends RvAdapter<Ticket, TicketListAdapter.Ticke
             ticket_title = itemView.findViewById(R.id.ticket_title);
             ticket_desc_tv = itemView.findViewById(R.id.ticket_desc_tv);
             ticket_badage_tv = itemView.findViewById(R.id.ticket_badage_tv);
+            ticket_card = itemView.findViewById(R.id.ticket_card);
         }
 
 
         @Override
         public void bindData(Ticket item) {
-            ticket_short_title_tv.setText(item.getTitle().substring(0,2));
+            ticket_short_title_tv.setText(item.getTitle().substring(0, 2));
             ticket_title.setText(item.getTitle());
             ticket_desc_tv.setText(item.getDescription());
+
+            ticket_card.setOnClickListener(view -> onRvItemsClickListener.OnItemClicked(item, getAdapterPosition()));
 
         }
     }

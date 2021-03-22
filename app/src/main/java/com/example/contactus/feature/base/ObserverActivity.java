@@ -3,9 +3,13 @@ package com.example.contactus.feature.base;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 
+import com.example.contactus.feature.eventbusevents.ConnectedInternet;
+import com.example.contactus.feature.eventbusevents.DisConnectedInternet;
 import com.example.contactus.feature.receviers.InternetConnectionBroadCastReciever;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 public abstract class ObserverActivity extends BaseActivity {
 
@@ -29,5 +33,13 @@ public abstract class ObserverActivity extends BaseActivity {
         super.onStop();
         EventBus.getDefault().unregister(this);
         unregisterReceiver(internetConnectionBroadCastReciever);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void setTextofToolbar(ConnectedInternet connectedInternet) {
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void setTextofToolbar(DisConnectedInternet disConnectedInternet) {
     }
 }
