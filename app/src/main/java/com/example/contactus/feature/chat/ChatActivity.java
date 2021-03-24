@@ -1,8 +1,12 @@
 package com.example.contactus.feature.chat;
 
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -16,6 +20,7 @@ import com.example.contactus.feature.data.Ticket;
 import com.example.contactus.feature.eventbusevents.ConnectedInternet;
 import com.example.contactus.feature.eventbusevents.DisConnectedInternet;
 import com.example.contactus.feature.main.MainActivity;
+import com.example.contactus.feature.utils.MenuUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +34,8 @@ public class ChatActivity extends ObserverActivity {
     private ChatAdapter chatAdapter;
     private EditText chat_user_message_ed;
     private View chat_send_message_iv;
+    private View chat_option_Iv;
+    private PopupMenu popup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +52,19 @@ public class ChatActivity extends ObserverActivity {
             message.setText(chat_user_message_ed.getText().toString());
             chatAdapter.addMessage(message);
         });
+        chat_option_Iv.setOnClickListener(view -> {
+            PopupMenu popup = new PopupMenu(this, view);
+            MenuInflater inflater = popup.getMenuInflater();
+            inflater.inflate(R.menu.chat_acitvity_menu, popup.getMenu());
+            popup.show();
+            Menu menu = popup.getMenu();
+            for (int i = 0; i < menu.size(); i++) {
+                MenuItem mi = menu.getItem(i);
+                MenuUtils.applyFontToMenuItem(mi, ChatActivity.this);
+            }
+        });
+
+
     }
 
     @Override
@@ -59,6 +79,13 @@ public class ChatActivity extends ObserverActivity {
         chatAdapter = new ChatAdapter();
         chat_ticketsList_rv.setAdapter(chatAdapter);
         chatAdapter.setMessageList(createMessages());
+        chat_option_Iv = findViewById(R.id.chat_option_Iv);
+        popup = new PopupMenu(ChatActivity.this, chat_option_Iv);
+
+//        PopupMenu popup = new PopupMenu(this, );
+//        MenuInflater inflater = popup.getMenuInflater();
+//        inflater.inflate(R.menu.chat_acitvity_menu, popup.getMenu());
+//        popup.show();
     }
 
     @Override

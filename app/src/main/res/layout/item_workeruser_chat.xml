@@ -1,29 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:maxWidth="50dp">
+    android:layout_margin="8dp">
 
 
-    <RelativeLayout
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/userAvatar"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignBottom="@id/messageContainer"
+        android:layout_alignParentLeft="true"
+        android:layout_margin="4dp"
+        android:src="@drawable/empty_avatar" />
+
+    <LinearLayout
+        android:id="@+id/messageContainer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true">
+        android:layout_toRightOf="@id/userAvatar"
+        android:background="@drawable/background_chat_worker"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:padding="8dp"
+            android:text="کارمند بخش آموزش"
+            android:textColor="@android:color/white"
+            android:fontFamily="@font/iranyekanbold"
+            android:textSize="14sp" />
 
         <TextView
             android:id="@+id/UserChat_text_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:background="@drawable/background_chat_worker"
-            android:fontFamily="@font/iranyekanbold"
-            android:maxWidth="350dp"
             android:padding="8dp"
+            android:layout_gravity="right"
             android:textColor="@android:color/white"
-            android:textSize="18sp"
-            tools:text="سلام وقت بخیر سلام وقت بخیر سلام وقت بخیر سلام وقت بخیر سلام وقت بخیر" />
-    </RelativeLayout>
+            android:fontFamily="@font/iranyekanbold"
+            android:gravity="right"
+            android:maxWidth="320dp"
+            android:text="lllllllllddddddddddddddddddllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll"
+            android:textSize="14sp" />
+
+
+    </LinearLayout>
 
 
 </RelativeLayout>

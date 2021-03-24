@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:theme="@style/Theme.ContactUs"
     tools:context=".feature.chat.ChatActivity">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -44,6 +45,7 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_centerVertical="true"
+                android:layout_marginLeft="8dp"
                 android:src="@drawable/ic_baseline_white_option_24" />
 
 
@@ -90,7 +92,7 @@
                 <EditText
                     android:id="@+id/chat_user_message_ed"
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
+                    android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
                     android:layout_marginLeft="4dp"
                     android:layout_marginRight="4dp"
@@ -100,7 +102,9 @@
                     android:fontFamily="@font/iranyekanbold"
                     android:drawableLeft="@drawable/ic_baseline_attach_file_24"
                     android:gravity="right|center"
+                    android:maxLines="10"
                     android:textSize="16dp"
+                    android:singleLine="false"
                     android:hint="متن تیکت"
                     android:padding="8dp" />
 
