@@ -6,7 +6,8 @@
     android:layout_height="wrap_content"
     android:layout_marginTop="16dp"
     android:layout_marginBottom="8dp"
-    app:layout_constrainedWidth="true">
+    android:layout_gravity="right"
+    android:layout_marginStart="8dp">
 
 
     <TextView
@@ -16,11 +17,14 @@
         android:layout_marginRight="8dp"
         android:background="@drawable/background_chat_stduser"
         android:fontFamily="@font/iranyekanbold"
-        android:paddingStart="16dp"
         android:paddingTop="8dp"
         android:paddingEnd="69dp"
+        android:layout_marginStart="90dp"
+        android:maxWidth="370dp"
         android:paddingBottom="10dp"
-        android:text="Hello"
+        android:paddingStart="30dp"
+        android:text="سلام وقت بخیر سلام وقت بخیرسلام وقت بخیر سلام وقت بخیر سلام وقت بخیر  سلام وقت بخیر سلام وقت بخیرسلام وقت بخیر سلام وقت بخیر سلام وقت بخیر "
+        android:textSize="14sp"
         android:textColor="@android:color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/marginSpacer" />
