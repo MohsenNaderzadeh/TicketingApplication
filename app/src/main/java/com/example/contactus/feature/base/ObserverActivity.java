@@ -11,11 +11,15 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import io.reactivex.disposables.CompositeDisposable;
+
 public abstract class ObserverActivity extends BaseActivity {
 
     private InternetConnectionBroadCastReciever internetConnectionBroadCastReciever;
-    public  abstract void observe();
 
+    public abstract void observe();
+
+    protected CompositeDisposable compositeDisposable = new CompositeDisposable();
 
 
     @Override
@@ -33,6 +37,7 @@ public abstract class ObserverActivity extends BaseActivity {
         super.onStop();
         EventBus.getDefault().unregister(this);
         unregisterReceiver(internetConnectionBroadCastReciever);
+        compositeDisposable.clear();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

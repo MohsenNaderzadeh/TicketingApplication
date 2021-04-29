@@ -1,4 +1,4 @@
-package com.example.contactus.feature.data;
+package com.example.contactus.feature.data.entities;
 
 public class MenuItem {
 

@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.contactus.R;
 import com.example.contactus.feature.base.RvViewHolder;
-import com.example.contactus.feature.data.Message;
+import com.example.contactus.feature.data.entities.Message;
 
 import java.util.List;
 

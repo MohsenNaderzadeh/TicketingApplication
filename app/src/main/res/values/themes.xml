@@ -8,11 +8,23 @@
     </style>
 
     <style name="Theme2" parent="Theme.ContactUs">
-        <item name="android:radius">35dp</item>
+
     </style>
 
     <style name="Theme.ContactUs.PopUpMenu" parent="Theme.ContactUs">
         <item name="fontFamily">@font/iranyekanbold</item>
+    </style>
+
+    <style name="Theme.ContactUs.ProgressBar" parent="Theme.ContactUs">
+        <item name="colorAccent">@color/white</item>
+    </style>
+
+    <style name="CustomDialogTheme" parent="@android:style/Theme.Dialog">
+
+        <item name="android:windowBackground">@null</item>
+        <item name="android:windowFrame">@null</item>
+
+
     </style>
 
 

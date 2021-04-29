@@ -1,4 +1,6 @@
-package com.example.contactus.feature.data;
+package com.example.contactus.feature.data.dataSource;
+
+import com.example.contactus.feature.data.entities.Ticket;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,7 +8,7 @@ import java.util.List;
 public class DataFakeGenerator {
 
 
-    public static List<Ticket> getTicketsList(){
+    public static List<Ticket> getTicketsList() {
         List<Ticket> tickets = new ArrayList<>();
         tickets.add(new Ticket(1, "تست", "سمیاد", "در حال بررسی"));
         tickets.add(new Ticket(2, "ناد", "ریست رمز", "در حال بررسی"));

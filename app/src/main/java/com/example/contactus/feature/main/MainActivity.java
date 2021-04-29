@@ -20,9 +20,9 @@ import com.example.contactus.feature.base.MyTextWatcher;
 import com.example.contactus.feature.base.ObserverActivity;
 import com.example.contactus.feature.base.OnRvItemsClickListener;
 import com.example.contactus.feature.chat.ChatActivity;
-import com.example.contactus.feature.data.DataFakeGenerator;
-import com.example.contactus.feature.data.MenuItem;
-import com.example.contactus.feature.data.Ticket;
+import com.example.contactus.feature.data.dataSource.DataFakeGenerator;
+import com.example.contactus.feature.data.entities.MenuItem;
+import com.example.contactus.feature.data.entities.Ticket;
 import com.example.contactus.feature.eventbusevents.ConnectedInternet;
 import com.example.contactus.feature.eventbusevents.DisConnectedInternet;
 import com.example.contactus.feature.main.adapter.NavigationMenuListAdapter;
@@ -141,7 +141,7 @@ public class MainActivity extends ObserverActivity implements OnRvItemsClickList
     public void onBackPressed() {
 
         if (isInSearchMode) {
-            isInSearchMode = false;
+
             search_query_ed.setText("");
             final Animation anim_out = AnimationUtils.loadAnimation(MainActivity.this, android.R.anim.fade_out);
             final Animation anim_in = AnimationUtils.loadAnimation(MainActivity.this, android.R.anim.fade_in);
@@ -152,10 +152,12 @@ public class MainActivity extends ObserverActivity implements OnRvItemsClickList
                     search_query_ed.setVisibility(View.INVISIBLE);
                     searchIcon.startAnimation(anim_out);
                     search_query_ed.startAnimation(anim_out);
+                    isInSearchMode = false;
                 }
             });
             searchIcon.startAnimation(anim_in);
             search_query_ed.startAnimation(anim_in);
+
         }
 
 
@@ -232,11 +234,8 @@ public class MainActivity extends ObserverActivity implements OnRvItemsClickList
 
 
         navigationMenuListAdapter.setItems(menuItemList);
-        navigationMenuListAdapter.setOnRvItemsClickListener(new OnRvItemsClickListener<MenuItem>() {
-            @Override
-            public void OnItemClicked(MenuItem item, int position) {
+        navigationMenuListAdapter.setOnRvItemsClickListener((item, position) -> {
 
-            }
         });
         main_navigation_menu_recyclerview.setAdapter(navigationMenuListAdapter);
 

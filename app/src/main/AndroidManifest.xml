@@ -4,7 +4,7 @@
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-
+    <uses-permission android:name="android.permission.INTERNET" />
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -12,18 +12,21 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="false"
         android:theme="@style/Theme.ContactUs">
-        <activity
-            android:name=".feature.chat.ChatActivity"
-            android:windowSoftInputMode="adjustResize"></activity>
-
-        <receiver android:name=".feature.receviers.InternetConnectionBroadCastReciever" />
-
-        <activity android:name=".feature.main.MainActivity">
+        <activity android:name=".feature.loginuser.UserLoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".feature.chat.ChatActivity"
+            android:windowSoftInputMode="adjustResize" />
+
+        <receiver android:name=".feature.receviers.InternetConnectionBroadCastReciever" />
+
+        <activity android:name=".feature.main.MainActivity">
+
         </activity>
     </application>
 

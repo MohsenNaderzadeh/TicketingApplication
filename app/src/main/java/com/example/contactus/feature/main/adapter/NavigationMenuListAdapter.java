@@ -12,7 +12,7 @@ import androidx.annotation.NonNull;
 import com.example.contactus.R;
 import com.example.contactus.feature.base.RvAdapter;
 import com.example.contactus.feature.base.RvViewHolder;
-import com.example.contactus.feature.data.MenuItem;
+import com.example.contactus.feature.data.entities.MenuItem;
 
 public class NavigationMenuListAdapter extends RvAdapter<MenuItem, NavigationMenuListAdapter.NavigationMenuListViewHolder> {
 

@@ -15,8 +15,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.contactus.R;
 import com.example.contactus.feature.base.ObserverActivity;
 import com.example.contactus.feature.chat.adapter.ChatAdapter;
-import com.example.contactus.feature.data.Message;
-import com.example.contactus.feature.data.Ticket;
+import com.example.contactus.feature.data.entities.Message;
+import com.example.contactus.feature.data.entities.Ticket;
 import com.example.contactus.feature.eventbusevents.ConnectedInternet;
 import com.example.contactus.feature.eventbusevents.DisConnectedInternet;
 import com.example.contactus.feature.main.MainActivity;
@@ -82,10 +82,6 @@ public class ChatActivity extends ObserverActivity {
         chat_option_Iv = findViewById(R.id.chat_option_Iv);
         popup = new PopupMenu(ChatActivity.this, chat_option_Iv);
 
-//        PopupMenu popup = new PopupMenu(this, );
-//        MenuInflater inflater = popup.getMenuInflater();
-//        inflater.inflate(R.menu.chat_acitvity_menu, popup.getMenu());
-//        popup.show();
     }
 
     @Override
