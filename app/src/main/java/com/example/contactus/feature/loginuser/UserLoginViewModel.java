@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.example.contactus.feature.data.TokenContainer;
 import com.example.contactus.feature.data.dataSource.UserInfoManager;
+import com.example.contactus.feature.data.dataSource.repo.AuthenticateDataSource;
 import com.example.contactus.feature.data.dataSource.repo.AuthenticateRepo;
 import com.example.contactus.feature.data.entities.Token;
 
@@ -28,7 +29,7 @@ public class UserLoginViewModel {
     public Completable authenticate(String userName, String password) {
         shouldShowProgressBar.onNext(true);
         Single<Token> tokenReq;
-        tokenReq = authenticateRepo.authenticate(userName, password);
+        tokenReq = authenticateRepo.authenticate(userName, password, AuthenticateDataSource.UserType.USER);
         return tokenReq.doOnSuccess(token -> {
             UserInfoManager userInfoManager = new UserInfoManager(context);
             userInfoManager.setTokenInSharedPref(token.getToken());

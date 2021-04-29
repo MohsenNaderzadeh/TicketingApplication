@@ -9,7 +9,7 @@ public class LocalDataSource implements AuthenticateDataSource {
 
 
     @Override
-    public Single<Token> authenticate(String userName, String passWord) {
+    public Single<Token> authenticate(String userName, String passWord, UserType userType) {
         return null;
     }
 }

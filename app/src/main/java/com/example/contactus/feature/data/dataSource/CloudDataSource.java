@@ -15,7 +15,11 @@ public class CloudDataSource implements AuthenticateDataSource {
     }
 
     @Override
-    public Single<Token> authenticate(String userName, String passWord) {
-        return apiService.authenticate(userName, passWord);
+    public Single<Token> authenticate(String userName, String passWord, UserType userType) {
+        if (userType == UserType.USER) {
+            return apiService.userAuthenticate(userName, passWord);
+        } else {
+            return apiService.supporterAuthenticate(userName, passWord);
+        }
     }
 }

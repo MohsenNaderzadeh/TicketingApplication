@@ -15,7 +15,7 @@ public class AuthenticateRepo implements AuthenticateDataSource {
     }
 
     @Override
-    public Single<Token> authenticate(String userName, String passWord) {
-        return cloudDataSource.authenticate(userName, passWord);
+    public Single<Token> authenticate(String userName, String passWord, UserType userType) {
+        return cloudDataSource.authenticate(userName, passWord, userType);
     }
 }

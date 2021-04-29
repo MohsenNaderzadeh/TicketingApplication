@@ -11,5 +11,10 @@ public interface ApiService {
 
     @POST("User/Login.php")
     @FormUrlEncoded
-    Single<Token> authenticate(@Field("username") String userName, @Field("password") String password);
+    Single<Token> userAuthenticate(@Field("username") String userName, @Field("password") String password);
+
+    @POST("Supporter/Login.php")
+    @FormUrlEncoded
+    Single<Token> supporterAuthenticate(@Field("username") String userName, @Field("password") String password);
+
 }

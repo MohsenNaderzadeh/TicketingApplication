@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".feature.supporterlogin.SupporterLoginActivity">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="56dp">
+
+            <ImageView
+                android:id="@+id/Supporter_Login_back_iv"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="8dp"
+                android:src="@drawable/ic_arrow_back_24" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="8dp"
+                android:fontFamily="@font/iranyekanbold"
+                android:text="ورود کارکنان دانشکده"
+                android:textColor="@android:color/white"
+                android:textSize="16sp" />
+        </RelativeLayout>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#F5F5F5"
+        android:gravity="center"
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+
+
+        <EditText
+            android:id="@+id/Supporter_Username_ed_login"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/username_ed_login"
+            android:fontFamily="@font/iranyekanbold"
+            android:gravity="start"
+            android:hint="نام کاربری خود را وارد کنید"
+            android:inputType="number"
+            android:padding="16dp" />
+
+        <EditText
+            android:id="@+id/Supporter_password_ed_login"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/Supporter_Username_ed_login"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/username_ed_login"
+            android:fontFamily="@font/iranyekanbold"
+            android:gravity="start"
+            android:hint="رمز عبور خود را وارد کنید"
+            android:inputType="number"
+            android:padding="16dp" />
+
+        <Button
+            android:id="@+id/Supporter_login_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/Supporter_password_ed_login"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/background_login_button"
+            android:enabled="false"
+            android:fontFamily="@font/iranyekanbold"
+            android:padding="16dp"
+            android:text="ورود به حساب کاربری" />
+
+        <TextView
+            android:id="@+id/SupporterForgetPassword_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/Supporter_login_btn"
+            android:layout_centerInParent="true"
+            android:layout_centerVertical="true"
+            android:layout_marginBottom="16dp"
+            android:fontFamily="@font/iranyekanbold"
+            android:text="رمز عبور خود را فراموش کرده ام "
+            android:textSize="14sp" />
+    </RelativeLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

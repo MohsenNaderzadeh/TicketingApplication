@@ -6,6 +6,10 @@ import io.reactivex.Single;
 
 public interface AuthenticateDataSource {
 
-    Single<Token> authenticate(String userName, String passWord);
+    Single<Token> authenticate(String userName, String passWord, UserType userType);
+
+    enum UserType {
+        USER, SUPPORTER
+    }
 
 }
