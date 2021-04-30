@@ -3,7 +3,6 @@ package com.example.contactus.feature.loginuser;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -29,7 +28,6 @@ public class UserLoginActivity extends ObserverActivity {
     EditText username_ed_login;
     EditText password_ed_login;
     Button btn_login;
-    LoadingDialogFragment loadingDialogFragment;
     private View UserForgetPassword_tv, Supporterlogintv;
 
     @Override
@@ -60,7 +58,6 @@ public class UserLoginActivity extends ObserverActivity {
                         .subscribeOn(AndroidSchedulers.mainThread())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(aBoolean -> {
-                            Log.i("progress", aBoolean.toString());
                             if (aBoolean)
                                 loadingDialogFragment.show(getSupportFragmentManager(), null);
                             else loadingDialogFragment.dismiss();
@@ -79,7 +76,6 @@ public class UserLoginActivity extends ObserverActivity {
         btn_login = findViewById(R.id.btn_login);
         UserForgetPassword_tv = findViewById(R.id.UserForgetPassword_tv);
         Supporterlogintv = findViewById(R.id.Supporterlogintv);
-        loadingDialogFragment = new LoadingDialogFragment();
         username_ed_login.addTextChangedListener(new MyTextWatcher() {
             @Override
             public void afterTextChanged(Editable editable) {
@@ -105,5 +101,11 @@ public class UserLoginActivity extends ObserverActivity {
                 startActivity(forgetPasswordIntent);
             }
         });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        compositeDisposable.clear();
     }
 }

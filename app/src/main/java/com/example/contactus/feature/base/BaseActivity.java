@@ -2,12 +2,13 @@ package com.example.contactus.feature.base;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import org.greenrobot.eventbus.EventBus;
+import com.example.contactus.feature.loginuser.LoadingDialogFragment;
 
 public abstract class BaseActivity extends AppCompatActivity {
 
     public abstract  void setUpViews();
 
+    protected LoadingDialogFragment loadingDialogFragment = new LoadingDialogFragment();
 
     @Override
     protected void onStart() {
