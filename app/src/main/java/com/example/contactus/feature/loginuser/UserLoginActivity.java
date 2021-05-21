@@ -9,15 +9,23 @@ import android.widget.EditText;
 
 import com.example.contactus.R;
 import com.example.contactus.feature.ForgetPassword.ForgetPasswordActivity;
-import com.example.contactus.feature.base.MyCompletableObserver;
+import com.example.contactus.feature.base.MSingleObserver;
 import com.example.contactus.feature.base.MyTextWatcher;
 import com.example.contactus.feature.base.ObserverActivity;
+import com.example.contactus.feature.data.TokenContainer;
 import com.example.contactus.feature.data.api.ApiServiceProvider;
 import com.example.contactus.feature.data.dataSource.CloudDataSource;
+import com.example.contactus.feature.data.dataSource.UserInfoManager;
 import com.example.contactus.feature.data.dataSource.repo.AuthenticateRepo;
+import com.example.contactus.feature.data.entities.LoginResponse;
+import com.example.contactus.feature.eventbusevents.ConnectedInternet;
+import com.example.contactus.feature.eventbusevents.DisConnectedInternet;
+import com.example.contactus.feature.main.TicketsListActivity;
 import com.example.contactus.feature.supporterlogin.SupporterLoginActivity;
+import com.example.contactus.feature.view.ErrorDialogFragment;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
 import io.reactivex.schedulers.Schedulers;
 
 
@@ -38,32 +46,44 @@ public class UserLoginActivity extends ObserverActivity {
 
     @Override
     public void observe() {
-
         btn_login.setOnClickListener(view -> {
+            loadingDialogFragment.show(getSupportFragmentManager(), null);
             userLoginViewModel.authenticate(username_ed_login.getText().toString(), password_ed_login.getText().toString())
                     .subscribeOn(Schedulers.newThread())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new MyCompletableObserver(compositeDisposable) {
+                    .subscribe(new MSingleObserver<LoginResponse>(compositeDisposable) {
                         @Override
-                        public void onComplete() {
+                        public void onSuccess(@NonNull LoginResponse loginResponse) {
+
+                            if (loginResponse.isSuccess()) {
+                                UserInfoManager userInfoManager = new UserInfoManager(UserLoginActivity.this);
+                                userInfoManager.setTokenInSharedPref(loginResponse.getToken());
+                                userInfoManager.setIsUserInSharedPref(true);
+                                TokenContainer.setIsUser(true);
+                                TokenContainer.updateToken(loginResponse.getToken());
+
+                                Intent ticketsListActivity = new Intent(UserLoginActivity.this, TicketsListActivity.class);
+                                startActivity(ticketsListActivity);
+
+                                loadingDialogFragment.dismiss();
 
 
+                            } else {
+                                loadingDialogFragment.dismiss();
+                                ErrorDialogFragment errorDialogFragment = ErrorDialogFragment.newInstance(loginResponse.getErrorMessage());
+                                errorDialogFragment.show(getSupportFragmentManager(), null);
+                            }
+                        }
+
+                        @Override
+                        public void onError(@NonNull Throwable e) {
+                            super.onError(e);
+                            loadingDialogFragment.dismiss();
+                            ErrorDialogFragment errorDialogFragment = ErrorDialogFragment.newInstance("خطای ناشناخته");
+                            errorDialogFragment.show(getSupportFragmentManager(), null);
                         }
                     });
         });
-
-
-        compositeDisposable.add(
-                userLoginViewModel.getShouldShowProgressBar()
-                        .subscribeOn(AndroidSchedulers.mainThread())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(aBoolean -> {
-                            if (aBoolean)
-                                loadingDialogFragment.show(getSupportFragmentManager(), null);
-                            else loadingDialogFragment.dismiss();
-                        }, throwable -> {
-                            loadingDialogFragment.dismiss();
-                        }));
 
 
     }
@@ -101,6 +121,17 @@ public class UserLoginActivity extends ObserverActivity {
                 startActivity(forgetPasswordIntent);
             }
         });
+    }
+
+    @Override
+    public void setTextofToolbar(ConnectedInternet connectedInternet) {
+        super.setTextofToolbar(connectedInternet);
+
+    }
+
+    @Override
+    public void setTextofToolbar(DisConnectedInternet disConnectedInternet) {
+        super.setTextofToolbar(disConnectedInternet);
     }
 
     @Override

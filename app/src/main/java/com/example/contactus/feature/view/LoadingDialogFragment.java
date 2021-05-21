@@ -1,6 +1,5 @@
-package com.example.contactus.feature.loginuser;
+package com.example.contactus.feature.view;
 
-import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,11 +13,7 @@ import com.example.contactus.R;
 
 public class LoadingDialogFragment extends DialogFragment {
 
-    private AlertDialog loadingDialog;
 
-    public AlertDialog getLoadingDialog() {
-        return loadingDialog;
-    }
 
     @Nullable
     @Override

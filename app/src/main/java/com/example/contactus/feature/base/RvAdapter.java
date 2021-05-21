@@ -11,7 +11,6 @@ import java.util.List;
 public abstract class RvAdapter<T, E extends RvViewHolder<T>> extends RecyclerView.Adapter<E> implements Filterable {
     private List<T> items;
     private List<T> filteredList;
-    protected List<T> main_items;
     private Filter filter;
 
 
@@ -34,7 +33,6 @@ public abstract class RvAdapter<T, E extends RvViewHolder<T>> extends RecyclerVi
 
     public RvAdapter(List<T> items) {
         this.items = items;
-        main_items =items;
     }
     public RvAdapter(){
 
@@ -56,7 +54,7 @@ public abstract class RvAdapter<T, E extends RvViewHolder<T>> extends RecyclerVi
 
     @Override
     public int getItemCount() {
-        return items.size();
+        return items != null ? items.size() : 0;
     }
 
     @Override

@@ -12,6 +12,7 @@ import com.example.contactus.R;
 import com.example.contactus.feature.base.RvViewHolder;
 import com.example.contactus.feature.data.entities.Message;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -19,7 +20,7 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private static final int STD_USER_MESSAGE_TYPE = 0;
     private static final int USER_MESSAGE_TYPE = 1;
-    private List<Message> messageList;
+    private List<Message> messageList = new ArrayList<>();
 
 
     public ChatAdapter() {
@@ -42,10 +43,18 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public int getItemViewType(int position) {
-        if (messageList.get(position).getType() == 0) {
+        if (messageList.get(position).getMessageSendType() == 0) {
             return STD_USER_MESSAGE_TYPE;
         } else {
             return USER_MESSAGE_TYPE;
+        }
+    }
+
+    public void updateMessage(Message oldMessage, Message newMessage) {
+        if (this.messageList.indexOf(oldMessage) != RecyclerView.NO_POSITION) {
+            int position = this.messageList.indexOf(oldMessage);
+            this.messageList.set(position, newMessage);
+            notifyItemChanged(position);
         }
     }
 
@@ -88,24 +97,29 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         @Override
         public void bindData(Message item) {
-
-
-            userText.setText(item.getText());
+            userText.setText(item.getMessageText());
         }
     }
 
     class StdTextChatViewHolder extends RvViewHolder<Message> {
         private final TextView stdText;
-
+        private final View sendStatus_iv;
         public StdTextChatViewHolder(@NonNull View itemView) {
             super(itemView);
             stdText = itemView.findViewById(R.id.stdUserChat_text_tv);
+            sendStatus_iv = itemView.findViewById(R.id.sendStatus_iv);
         }
 
         @Override
         public void bindData(Message item) {
 
-            stdText.setText(item.getText());
+            stdText.setText(item.getMessageText());
+            if (item.getMessageSendStatus() == Message.sendStatus.SEND) {
+                sendStatus_iv.setBackgroundResource(0);
+                sendStatus_iv.setBackgroundResource(R.drawable.ic_check);
+            } else {
+                sendStatus_iv.setBackgroundResource(R.drawable.unsend);
+            }
         }
     }
 }

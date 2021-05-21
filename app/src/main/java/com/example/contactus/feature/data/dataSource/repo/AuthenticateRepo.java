@@ -1,7 +1,7 @@
 package com.example.contactus.feature.data.dataSource.repo;
 
 import com.example.contactus.feature.data.dataSource.CloudDataSource;
-import com.example.contactus.feature.data.entities.Token;
+import com.example.contactus.feature.data.entities.LoginResponse;
 
 import io.reactivex.Single;
 
@@ -15,7 +15,7 @@ public class AuthenticateRepo implements AuthenticateDataSource {
     }
 
     @Override
-    public Single<Token> authenticate(String userName, String passWord, UserType userType) {
+    public Single<LoginResponse> authenticate(String userName, String passWord, UserType userType) {
         return cloudDataSource.authenticate(userName, passWord, userType);
     }
 }

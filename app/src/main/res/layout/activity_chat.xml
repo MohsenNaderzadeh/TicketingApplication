@@ -57,13 +57,20 @@
         android:layout_height="match_parent"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
+        <ScrollView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:overScrollMode="never"
+            android:scrollbars="none">
 
-        <com.inthecheesefactory.thecheeselibrary.widget.AdjustableImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:adjustViewBounds="true"
-            android:scaleType="center"
-            android:src="@drawable/chat_background" />
+            <com.inthecheesefactory.thecheeselibrary.widget.AdjustableImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:adjustViewBounds="true"
+                android:scaleType="fitXY"
+                android:src="@drawable/chat_background" />
+        </ScrollView>
+
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -130,7 +137,7 @@
                 android:layout_height="match_parent"
                 android:layout_above="@id/chat_message_rl"
                 android:layoutDirection="rtl"
-                android:visibility="visible" />
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/chat_ticketList_emptyState_tv"
@@ -142,7 +149,7 @@
                 android:padding="8dp"
                 android:text="پیامی یافت نشد"
                 android:gravity="center"
-                android:visibility="gone"
+                android:visibility="visible"
                 android:textColor="@android:color/white"
                 android:textSize="14sp" />
 

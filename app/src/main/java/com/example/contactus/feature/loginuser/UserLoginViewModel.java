@@ -3,13 +3,10 @@ package com.example.contactus.feature.loginuser;
 import android.content.Context;
 
 import com.example.contactus.feature.base.BaseViewModel;
-import com.example.contactus.feature.data.TokenContainer;
-import com.example.contactus.feature.data.dataSource.UserInfoManager;
 import com.example.contactus.feature.data.dataSource.repo.AuthenticateDataSource;
 import com.example.contactus.feature.data.dataSource.repo.AuthenticateRepo;
-import com.example.contactus.feature.data.entities.Token;
+import com.example.contactus.feature.data.entities.LoginResponse;
 
-import io.reactivex.Completable;
 import io.reactivex.Single;
 
 
@@ -24,20 +21,9 @@ public class UserLoginViewModel extends BaseViewModel {
         this.context = context;
     }
 
-    public Completable authenticate(String userName, String password) {
+    public Single<LoginResponse> authenticate(String userName, String password) {
         shouldShowProgressBar.onNext(true);
-        Single<Token> tokenReq;
-        tokenReq = authenticateRepo.authenticate(userName, password, AuthenticateDataSource.UserType.USER);
-        return tokenReq.doOnSuccess(token -> {
-            UserInfoManager userInfoManager = new UserInfoManager(context);
-            userInfoManager.setTokenInSharedPref(token.getToken());
-            userInfoManager.setIsUserInSharedPref(true);
-            TokenContainer.updateToken(token.getToken());
-            TokenContainer.setIsUser(true);
-            userInfoManager.setIsUserInSharedPref(true);
-        }).doOnEvent((token, throwable) -> {
-            shouldShowProgressBar.onNext(false);
-        }).ignoreElement();
+        return authenticateRepo.authenticate(userName, password, AuthenticateDataSource.UserType.USER).doOnEvent((loginResponse, throwable) -> shouldShowProgressBar.onNext(false));
     }
 
 

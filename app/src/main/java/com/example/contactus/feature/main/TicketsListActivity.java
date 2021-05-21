@@ -14,15 +14,22 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.ethanhua.skeleton.RecyclerViewSkeletonScreen;
+import com.ethanhua.skeleton.Skeleton;
 import com.example.contactus.R;
+import com.example.contactus.feature.base.MSingleObserver;
 import com.example.contactus.feature.base.MyAnimationListener;
 import com.example.contactus.feature.base.MyTextWatcher;
 import com.example.contactus.feature.base.ObserverActivity;
 import com.example.contactus.feature.base.OnRvItemsClickListener;
 import com.example.contactus.feature.chat.ChatActivity;
-import com.example.contactus.feature.data.dataSource.DataFakeGenerator;
+import com.example.contactus.feature.data.api.ApiServiceProvider;
+import com.example.contactus.feature.data.dataSource.CloudDataSource;
+import com.example.contactus.feature.data.dataSource.repo.TicketsRepository;
 import com.example.contactus.feature.data.entities.MenuItem;
-import com.example.contactus.feature.data.entities.Ticket;
+import com.example.contactus.feature.data.entities.RelatedDepartemants;
+import com.example.contactus.feature.data.entities.TicketInfo;
+import com.example.contactus.feature.data.entities.TicketsResponse;
 import com.example.contactus.feature.eventbusevents.ConnectedInternet;
 import com.example.contactus.feature.eventbusevents.DisConnectedInternet;
 import com.example.contactus.feature.main.adapter.NavigationMenuListAdapter;
@@ -31,7 +38,10 @@ import com.example.contactus.feature.main.adapter.TicketListAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends ObserverActivity implements OnRvItemsClickListener<Ticket> {
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
+
+public class TicketsListActivity extends ObserverActivity implements OnRvItemsClickListener<TicketInfo>, AddNewTicketDialog.OnTicketsCreationFirstStepCompeleted {
 
     private RecyclerView main_tickets_rv;
     private View main_add_New_Ticket_floatingBtn;
@@ -44,19 +54,27 @@ public class MainActivity extends ObserverActivity implements OnRvItemsClickList
     private boolean isInSearchMode = false;
     private View main_navigation_ic;
     private DrawerLayout main_drawer_layout;
-
+    public static final String EXTRA_KEY_SELECTED_DEPARTEMANT = "selected_departemant";
+    public static final String EXTRA_KEY_NEW_TICKET_TITLE = "new_Ticket_Title";
+    private TicketListViewModel ticketListViewModel;
+    private RecyclerViewSkeletonScreen ticketsViewSkeleton;
     public static final String EXTRA_KEY_TICKET_TO_CHAT = "ticket_to_chat";
+    private TextView emptyState_tv;
+    private TextView noSearchResult_tv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
     }
 
     @Override
     public void setUpViews() {
+        ticketListAdapter = new TicketListAdapter(this);
+        noSearchResult_tv = findViewById(R.id.noSearchResult_tv);
         main_tickets_rv = findViewById(R.id.main_tickets_rv);
+        emptyState_tv = findViewById(R.id.emptyState_tv);
+        ticketListViewModel = new TicketListViewModel(new TicketsRepository(new CloudDataSource(ApiServiceProvider.getApiService())));
         main_add_New_Ticket_floatingBtn = findViewById(R.id.main_add_New_Ticket_floatingBtn);
         searchIcon = findViewById(R.id.searchIcon);
         search_query_ed = findViewById(R.id.search_query_ed);
@@ -64,20 +82,22 @@ public class MainActivity extends ObserverActivity implements OnRvItemsClickList
         main_navigation_menu_recyclerview = findViewById(R.id.main_navigation_menu_recyclerview);
         main_navigation_ic = findViewById(R.id.main_hambergur_ic);
         main_drawer_layout = findViewById(R.id.main_drawer_layout);
-    }
-
-    @Override
-    public void observe() {
-        ticketListAdapter = new TicketListAdapter(DataFakeGenerator.getTicketsList());
         ticketListAdapter.setOnRvItemsClickListener(this);
-        main_tickets_rv.setLayoutManager(new LinearLayoutManager(MainActivity.this, RecyclerView.VERTICAL, false));
+        main_tickets_rv.setLayoutManager(new LinearLayoutManager(TicketsListActivity.this, RecyclerView.VERTICAL, false));
+        main_tickets_rv.setNestedScrollingEnabled(false);
         main_tickets_rv.setAdapter(ticketListAdapter);
+        ticketsViewSkeleton = Skeleton.bind(main_tickets_rv)
+                .adapter(ticketListAdapter)
+                .load(R.layout.tickets_item_sketlon)
+                .count(10)
+                .shimmer(true)
+                .show();
         setupDrawerItems();
         searchIcon.setOnClickListener(view -> {
             if (!isInSearchMode) {
                 isInSearchMode = true;
-                final Animation anim_out = AnimationUtils.loadAnimation(MainActivity.this, android.R.anim.fade_out);
-                final Animation anim_in = AnimationUtils.loadAnimation(MainActivity.this, android.R.anim.fade_in);
+                final Animation anim_out = AnimationUtils.loadAnimation(TicketsListActivity.this, android.R.anim.fade_out);
+                final Animation anim_in = AnimationUtils.loadAnimation(TicketsListActivity.this, android.R.anim.fade_in);
                 anim_out.setAnimationListener(new MyAnimationListener() {
                     @Override
                     public void onAnimationEnd(Animation animation) {
@@ -89,6 +109,7 @@ public class MainActivity extends ObserverActivity implements OnRvItemsClickList
                 });
                 searchIcon.startAnimation(anim_out);
                 search_query_ed.startAnimation(anim_out);
+                //Perform Search
                 search_query_ed.addTextChangedListener(new MyTextWatcher() {
                     @Override
                     public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -99,8 +120,8 @@ public class MainActivity extends ObserverActivity implements OnRvItemsClickList
             } else {
                 isInSearchMode = false;
                 search_query_ed.setText("");
-                final Animation anim_out = AnimationUtils.loadAnimation(MainActivity.this, android.R.anim.fade_out);
-                final Animation anim_in = AnimationUtils.loadAnimation(MainActivity.this, android.R.anim.fade_in);
+                final Animation anim_out = AnimationUtils.loadAnimation(TicketsListActivity.this, android.R.anim.fade_out);
+                final Animation anim_in = AnimationUtils.loadAnimation(TicketsListActivity.this, android.R.anim.fade_in);
                 anim_in.setAnimationListener(new MyAnimationListener() {
                     @Override
                     public void onAnimationEnd(Animation animation) {
@@ -120,6 +141,7 @@ public class MainActivity extends ObserverActivity implements OnRvItemsClickList
         main_add_New_Ticket_floatingBtn.setOnClickListener(view -> {
             AddNewTicketDialog addNewTicketDialog = new AddNewTicketDialog();
             addNewTicketDialog.show(getSupportFragmentManager(), null);
+            addNewTicketDialog.setOnTicketsCreationFirstStepCompeleted(TicketsListActivity.this);
         });
 
 
@@ -128,23 +150,60 @@ public class MainActivity extends ObserverActivity implements OnRvItemsClickList
                 main_drawer_layout.openDrawer(Gravity.RIGHT);
             }
         });
+
+        ticketListAdapter.setOnSearchCallBack(new TicketListAdapter.OnSearchCallBack() {
+            @Override
+            public void searchHasNoResult() {
+                main_tickets_rv.setVisibility(View.GONE);
+                noSearchResult_tv.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void searchHasResult() {
+                noSearchResult_tv.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void searchBoxNoValue() {
+                main_tickets_rv.setVisibility(View.VISIBLE);
+                noSearchResult_tv.setVisibility(View.GONE);
+                ticketListAdapter.setItems(ticketListAdapter.getMainList());
+            }
+        });
     }
 
     @Override
-    public void OnItemClicked(Ticket item, int position) {
-        Intent intent = new Intent(MainActivity.this, ChatActivity.class);
-        intent.putExtra(EXTRA_KEY_TICKET_TO_CHAT, item);
-        startActivity(intent);
+    public void observe() {
+
+        ticketListViewModel.getTicketsList()
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new MSingleObserver<TicketsResponse>(compositeDisposable) {
+                    @Override
+                    public void onSuccess(TicketsResponse ticketsResponse) {
+                        if (ticketsResponse.isSuccess()) {
+                            if (ticketsResponse.getTicketsLenght() > 0) {
+                                ticketListAdapter.setItems(ticketsResponse.getTickets());
+                                main_tickets_rv.setVisibility(View.VISIBLE);
+                            } else {
+                                emptyState_tv.setVisibility(View.VISIBLE);
+
+                            }
+                            ticketsViewSkeleton.hide();
+                        }
+                    }
+                });
+
+
     }
+
 
     @Override
     public void onBackPressed() {
-
         if (isInSearchMode) {
-
             search_query_ed.setText("");
-            final Animation anim_out = AnimationUtils.loadAnimation(MainActivity.this, android.R.anim.fade_out);
-            final Animation anim_in = AnimationUtils.loadAnimation(MainActivity.this, android.R.anim.fade_in);
+            final Animation anim_out = AnimationUtils.loadAnimation(TicketsListActivity.this, android.R.anim.fade_out);
+            final Animation anim_in = AnimationUtils.loadAnimation(TicketsListActivity.this, android.R.anim.fade_in);
             anim_in.setAnimationListener(new MyAnimationListener() {
                 @Override
                 public void onAnimationEnd(Animation animation) {
@@ -192,7 +251,7 @@ public class MainActivity extends ObserverActivity implements OnRvItemsClickList
 
     private void setupDrawerItems() {
         navigationMenuListAdapter = new NavigationMenuListAdapter();
-        main_navigation_menu_recyclerview.setLayoutManager(new LinearLayoutManager(MainActivity.this, RecyclerView.VERTICAL, false));
+        main_navigation_menu_recyclerview.setLayoutManager(new LinearLayoutManager(TicketsListActivity.this, RecyclerView.VERTICAL, false));
         List<MenuItem> menuItemList = new ArrayList<>();
         MenuItem MainPage = new MenuItem();
 
@@ -241,4 +300,18 @@ public class MainActivity extends ObserverActivity implements OnRvItemsClickList
 
     }
 
+    @Override
+    public void OnItemClicked(TicketInfo item, int position) {
+        Intent intent = new Intent(TicketsListActivity.this, ChatActivity.class);
+        intent.putExtra(EXTRA_KEY_TICKET_TO_CHAT, item);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onTicketRelatedDepartemantAndTicketTitleRecieved(RelatedDepartemants selectedDepartemant, String ticketTitle) {
+        Intent intent = new Intent(TicketsListActivity.this, ChatActivity.class);
+        intent.putExtra(EXTRA_KEY_SELECTED_DEPARTEMANT, selectedDepartemant);
+        intent.putExtra(EXTRA_KEY_NEW_TICKET_TITLE, ticketTitle);
+        startActivity(intent);
+    }
 }

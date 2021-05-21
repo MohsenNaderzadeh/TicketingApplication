@@ -7,7 +7,7 @@ import com.example.contactus.feature.data.TokenContainer;
 import com.example.contactus.feature.data.dataSource.CloudDataSource;
 import com.example.contactus.feature.data.dataSource.UserInfoManager;
 import com.example.contactus.feature.data.dataSource.repo.AuthenticateDataSource;
-import com.example.contactus.feature.data.entities.Token;
+import com.example.contactus.feature.data.entities.LoginResponse;
 
 import io.reactivex.Completable;
 import io.reactivex.Single;
@@ -24,7 +24,7 @@ public class SupporterLoginViewModel extends BaseViewModel {
 
     public Completable authenticate(String userName, String password) {
         shouldShowProgressBar.onNext(true);
-        Single<Token> tokenReq;
+        Single<LoginResponse> tokenReq;
         tokenReq = cloudDataSource.authenticate(userName, password, AuthenticateDataSource.UserType.SUPPORTER);
         return tokenReq.doOnSuccess(token -> {
             UserInfoManager userInfoManager = new UserInfoManager(context);

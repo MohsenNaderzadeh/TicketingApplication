@@ -1,6 +1,7 @@
 package com.example.contactus.feature.chat;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -13,45 +14,109 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.contactus.R;
+import com.example.contactus.feature.base.MSingleObserver;
 import com.example.contactus.feature.base.ObserverActivity;
 import com.example.contactus.feature.chat.adapter.ChatAdapter;
+import com.example.contactus.feature.data.api.ApiServiceProvider;
+import com.example.contactus.feature.data.dataSource.CloudDataSource;
+import com.example.contactus.feature.data.entities.AddTicketResponse;
 import com.example.contactus.feature.data.entities.Message;
-import com.example.contactus.feature.data.entities.Ticket;
+import com.example.contactus.feature.data.entities.RelatedDepartemants;
+import com.example.contactus.feature.data.entities.SubmitNewTicketMessageResponse;
+import com.example.contactus.feature.data.entities.TicketInfo;
 import com.example.contactus.feature.eventbusevents.ConnectedInternet;
 import com.example.contactus.feature.eventbusevents.DisConnectedInternet;
-import com.example.contactus.feature.main.MainActivity;
+import com.example.contactus.feature.main.TicketsListActivity;
 import com.example.contactus.feature.utils.MenuUtils;
 
-import java.util.ArrayList;
-import java.util.List;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 public class ChatActivity extends ObserverActivity {
-
+    private static final String TAG = "ChatActivity";
     private View main_hambergur_back_ic;
     private TextView chat_ticket_title_tv;
-    private Ticket input_Intent;
+    private TicketInfo input_Intent;
     private RecyclerView chat_ticketsList_rv;
     private ChatAdapter chatAdapter;
     private EditText chat_user_message_ed;
     private View chat_send_message_iv;
     private View chat_option_Iv;
+    private RelatedDepartemants selectedDepartement;
+    private String newTicketTitle;
+    private TextView chat_ticketList_emptyState_tv;
     private PopupMenu popup;
+    private ChatActivityViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
-        input_Intent = getIntent().getParcelableExtra(MainActivity.EXTRA_KEY_TICKET_TO_CHAT);
+        input_Intent = getIntent().getParcelableExtra(TicketsListActivity.EXTRA_KEY_TICKET_TO_CHAT);
+        selectedDepartement = getIntent().getParcelableExtra(TicketsListActivity.EXTRA_KEY_SELECTED_DEPARTEMANT);
+        newTicketTitle = getIntent().getStringExtra(TicketsListActivity.EXTRA_KEY_NEW_TICKET_TITLE);
     }
 
     @Override
     public void observe() {
         chat_send_message_iv.setOnClickListener(view -> {
-            Message message = new Message();
-            message.setType(0);
-            message.setText(chat_user_message_ed.getText().toString());
-            chatAdapter.addMessage(message);
+            if (input_Intent == null) {
+                chat_ticketList_emptyState_tv.setVisibility(View.GONE);
+                chat_ticketsList_rv.setVisibility(View.VISIBLE);
+                Message message = new Message();
+                message.setMessageSendType(0);
+                message.setMessageText(chat_user_message_ed.getText().toString());
+                chatAdapter.addMessage(message);
+
+                viewModel.submitNewTicket(newTicketTitle, selectedDepartement.getDepartemantId()).subscribeOn(Schedulers.newThread())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new MSingleObserver<AddTicketResponse>(compositeDisposable) {
+                            @Override
+                            public void onSuccess(AddTicketResponse addTicketResponse) {
+                                Log.i(TAG, "onSuccess: " + addTicketResponse);
+                                viewModel.submitNewTicketMessage(addTicketResponse.getTicketInfo().getTicketOwnerId(), 0, chat_user_message_ed.getText().toString(), addTicketResponse.getTicketInfo().getTicketId())
+                                        .subscribeOn(Schedulers.newThread())
+                                        .observeOn(AndroidSchedulers.mainThread())
+                                        .subscribe(new MSingleObserver<SubmitNewTicketMessageResponse>(compositeDisposable) {
+                                            @Override
+                                            public void onSuccess(SubmitNewTicketMessageResponse submitNewTicketMessageResponse) {
+                                                Message newMessage = submitNewTicketMessageResponse.getMessage();
+                                                newMessage.setMessageSendStatus(Message.sendStatus.SEND);
+                                                chatAdapter.updateMessage(message, newMessage);
+                                            }
+                                        });
+                            }
+                        });
+            }
         });
+
+
+    }
+
+    @Override
+    public void setUpViews() {
+        main_hambergur_back_ic = findViewById(R.id.main_hambergur_back_ic);
+        chat_ticket_title_tv = findViewById(R.id.chat_ticket_title_tv);
+        chat_ticket_title_tv.setText(input_Intent != null ? input_Intent.getTicketTitle() : newTicketTitle);
+        chat_ticketsList_rv = findViewById(R.id.chat_ticketsList_rv);
+        chat_user_message_ed = findViewById(R.id.chat_user_message_ed);
+        chat_send_message_iv = findViewById(R.id.chat_send_message_iv);
+        chat_option_Iv = findViewById(R.id.chat_option_Iv);
+        viewModel = new ChatActivityViewModel(new CloudDataSource(ApiServiceProvider.getApiService()));
+        chat_ticketList_emptyState_tv = findViewById(R.id.chat_ticketList_emptyState_tv);
+        chat_ticketsList_rv.setLayoutManager(new LinearLayoutManager(ChatActivity.this, RecyclerView.VERTICAL, false));
+        chatAdapter = new ChatAdapter();
+        chat_ticketsList_rv.setAdapter(chatAdapter);
+        if (input_Intent != null) {
+            //chatAdapter.setMessageList(createMessages());
+            chat_ticketList_emptyState_tv.setVisibility(View.GONE);
+            chat_ticketsList_rv.setVisibility(View.VISIBLE);
+        } else {
+            chat_option_Iv.setVisibility(View.GONE);
+        }
+        popup = new PopupMenu(ChatActivity.this, chat_option_Iv);
+
+
         chat_option_Iv.setOnClickListener(view -> {
             PopupMenu popup = new PopupMenu(this, view);
             MenuInflater inflater = popup.getMenuInflater();
@@ -63,25 +128,6 @@ public class ChatActivity extends ObserverActivity {
                 MenuUtils.applyFontToMenuItem(mi, ChatActivity.this);
             }
         });
-
-
-    }
-
-    @Override
-    public void setUpViews() {
-        main_hambergur_back_ic = findViewById(R.id.main_hambergur_back_ic);
-        chat_ticket_title_tv = findViewById(R.id.chat_ticket_title_tv);
-        chat_ticket_title_tv.setText(input_Intent.getTitle());
-        chat_ticketsList_rv = findViewById(R.id.chat_ticketsList_rv);
-        chat_user_message_ed = findViewById(R.id.chat_user_message_ed);
-        chat_send_message_iv = findViewById(R.id.chat_send_message_iv);
-        chat_ticketsList_rv.setLayoutManager(new LinearLayoutManager(ChatActivity.this, RecyclerView.VERTICAL, false));
-        chatAdapter = new ChatAdapter();
-        chat_ticketsList_rv.setAdapter(chatAdapter);
-        chatAdapter.setMessageList(createMessages());
-        chat_option_Iv = findViewById(R.id.chat_option_Iv);
-        popup = new PopupMenu(ChatActivity.this, chat_option_Iv);
-
     }
 
     @Override
@@ -95,20 +141,4 @@ public class ChatActivity extends ObserverActivity {
     }
 
 
-    public List<Message> createMessages() {
-        List<Message> messages = new ArrayList<>();
-        Message stdMessage = new Message();
-        stdMessage.setText("سلام وقت بخیر");
-        stdMessage.setType(0);
-        Message userMessage = new Message();
-        userMessage.setText("سلام وقت شما هم بخیر");
-        userMessage.setType(1);
-        Message stdmessage2 = new Message();
-        stdmessage2.setText("در مورد ناد سوال داشتم");
-        stdmessage2.setType(0);
-        messages.add(stdMessage);
-        messages.add(userMessage);
-        messages.add(stdmessage2);
-        return messages;
-    }
 }

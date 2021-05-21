@@ -2,7 +2,7 @@ package com.example.contactus.feature.base;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.contactus.feature.loginuser.LoadingDialogFragment;
+import com.example.contactus.feature.view.LoadingDialogFragment;
 
 public abstract class BaseActivity extends AppCompatActivity {
 

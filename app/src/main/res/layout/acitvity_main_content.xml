@@ -75,7 +75,28 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/main_tickets_rv"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/emptyState_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:fontFamily="@font/iranyekanbold"
+            android:text="شما هیچ تیکت فعالی ندارید !"
+            android:textSize="16sp"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/noSearchResult_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:fontFamily="@font/iranyekanbold"
+            android:text="نتیجه ای متناسب جستجوی شما پیدا نشد !"
+            android:textSize="16sp"
+            android:visibility="gone" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/main_add_New_Ticket_floatingBtn"

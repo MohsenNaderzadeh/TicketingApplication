@@ -28,7 +28,7 @@
 
         <receiver android:name=".feature.receviers.InternetConnectionBroadCastReciever" />
 
-        <activity android:name=".feature.main.MainActivity" />
+        <activity android:name=".feature.main.TicketsListActivity" />
     </application>
 
 </manifest>
