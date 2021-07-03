@@ -1,15 +1,15 @@
 package com.example.contactus.feature.data.dataSource.repo;
 
-import com.example.contactus.feature.data.dataSource.CloudDataSource;
+import com.example.contactus.feature.data.dataSource.AuthenticationCloudDataSource;
 import com.example.contactus.feature.data.entities.LoginResponse;
 
 import io.reactivex.Single;
 
 public class AuthenticateRepo implements AuthenticateDataSource {
 
-    private final CloudDataSource cloudDataSource;
+    private final AuthenticationCloudDataSource cloudDataSource;
 
-    public AuthenticateRepo(CloudDataSource CloudDataSource) {
+    public AuthenticateRepo(AuthenticationCloudDataSource CloudDataSource) {
 
         cloudDataSource = CloudDataSource;
     }

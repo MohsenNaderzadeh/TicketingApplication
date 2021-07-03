@@ -1,4 +1,4 @@
-package com.example.contactus.feature.main;
+package com.example.contactus.feature.studentmain;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -24,7 +24,7 @@ import com.example.contactus.feature.base.ObserverActivity;
 import com.example.contactus.feature.base.OnRvItemsClickListener;
 import com.example.contactus.feature.chat.ChatActivity;
 import com.example.contactus.feature.data.api.ApiServiceProvider;
-import com.example.contactus.feature.data.dataSource.CloudDataSource;
+import com.example.contactus.feature.data.dataSource.TicketsCloudDataSource;
 import com.example.contactus.feature.data.dataSource.repo.TicketsRepository;
 import com.example.contactus.feature.data.entities.MenuItem;
 import com.example.contactus.feature.data.entities.RelatedDepartemants;
@@ -32,8 +32,8 @@ import com.example.contactus.feature.data.entities.TicketInfo;
 import com.example.contactus.feature.data.entities.TicketsResponse;
 import com.example.contactus.feature.eventbusevents.ConnectedInternet;
 import com.example.contactus.feature.eventbusevents.DisConnectedInternet;
-import com.example.contactus.feature.main.adapter.NavigationMenuListAdapter;
-import com.example.contactus.feature.main.adapter.TicketListAdapter;
+import com.example.contactus.feature.studentmain.adapter.NavigationMenuListAdapter;
+import com.example.contactus.feature.studentmain.adapter.TicketListAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,7 +74,7 @@ public class TicketsListActivity extends ObserverActivity implements OnRvItemsCl
         noSearchResult_tv = findViewById(R.id.noSearchResult_tv);
         main_tickets_rv = findViewById(R.id.main_tickets_rv);
         emptyState_tv = findViewById(R.id.emptyState_tv);
-        ticketListViewModel = new TicketListViewModel(new TicketsRepository(new CloudDataSource(ApiServiceProvider.getApiService())));
+        ticketListViewModel = new TicketListViewModel(new TicketsRepository(new TicketsCloudDataSource(ApiServiceProvider.getApiService())));
         main_add_New_Ticket_floatingBtn = findViewById(R.id.main_add_New_Ticket_floatingBtn);
         searchIcon = findViewById(R.id.searchIcon);
         search_query_ed = findViewById(R.id.search_query_ed);
@@ -184,10 +184,9 @@ public class TicketsListActivity extends ObserverActivity implements OnRvItemsCl
                         if (ticketsResponse.isSuccess()) {
                             if (ticketsResponse.getTicketsLenght() > 0) {
                                 ticketListAdapter.setItems(ticketsResponse.getTickets());
-                                main_tickets_rv.setVisibility(View.VISIBLE);
                             } else {
                                 emptyState_tv.setVisibility(View.VISIBLE);
-
+                                main_tickets_rv.setVisibility(View.GONE);
                             }
                             ticketsViewSkeleton.hide();
                         }
@@ -260,11 +259,6 @@ public class TicketsListActivity extends ObserverActivity implements OnRvItemsCl
         MainPage.setItemText("صفحه اصلی");
         menuItemList.add(MainPage);
 
-        MenuItem VR = new MenuItem();
-        VR.setId(6);
-        VR.setItemIcon(R.drawable.ic_baseline_preview_24);
-        VR.setItemText("تور مجازی");
-        menuItemList.add(VR);
 
         MenuItem SettingItem = new MenuItem();
         SettingItem.setId(2);

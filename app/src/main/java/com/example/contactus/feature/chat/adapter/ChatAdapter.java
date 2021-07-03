@@ -43,7 +43,7 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public int getItemViewType(int position) {
-        if (messageList.get(position).getMessageSendType() == 0) {
+        if (messageList.get(position).getMessageSendType() == 1) {
             return STD_USER_MESSAGE_TYPE;
         } else {
             return USER_MESSAGE_TYPE;

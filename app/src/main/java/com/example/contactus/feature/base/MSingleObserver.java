@@ -26,6 +26,5 @@ public abstract class MSingleObserver<T> implements SingleObserver<T> {
         if (e instanceof HttpException) {
             Log.i("error", e.toString());
         }
-
     }
 }

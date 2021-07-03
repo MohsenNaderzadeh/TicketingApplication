@@ -1,9 +1,12 @@
 package com.example.contactus.feature.data.api;
 
 import com.example.contactus.feature.data.entities.AddTicketResponse;
+import com.example.contactus.feature.data.entities.CloseTicketResponse;
 import com.example.contactus.feature.data.entities.LoginResponse;
+import com.example.contactus.feature.data.entities.MessageListResponse;
 import com.example.contactus.feature.data.entities.RelatedDepartemants;
 import com.example.contactus.feature.data.entities.SubmitNewTicketMessageResponse;
+import com.example.contactus.feature.data.entities.SupporterTicketInboxResponse;
 import com.example.contactus.feature.data.entities.TicketsResponse;
 
 import java.util.List;
@@ -13,6 +16,7 @@ import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Query;
 
 public interface ApiService {
 
@@ -38,4 +42,17 @@ public interface ApiService {
     @POST("User/AddNewTicketMessage.php")
     @FormUrlEncoded
     Single<SubmitNewTicketMessageResponse> submitNewMessageOfTicket(@Field("studentId") int studentId, @Field("MessageSendType") int messageSendType, @Field("MessageText") String messageText, @Field("TicketId") int ticketId);
+
+
+    @GET("User/GetTicketsMessages.php")
+    Single<MessageListResponse> getAllTicketsMessage(@Query("ticketId") int ticketId);
+
+
+    @POST("User/CloseTicket.php")
+    @FormUrlEncoded
+    Single<CloseTicketResponse> closeTicket(@Field("ticketId") int ticketId);
+
+    @GET("Supporter/GetAllInboxTickets.php")
+    Single<SupporterTicketInboxResponse> getAllSupporterTicketInbox();
+
 }

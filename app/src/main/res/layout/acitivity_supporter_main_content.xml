@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -14,7 +13,7 @@
             android:background="@color/orange_500">
 
             <ImageView
-                android:id="@+id/main_hambergur_ic"
+                android:id="@+id/main_supporter_panel_navigation_btn"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_alignParentRight="true"
@@ -23,19 +22,19 @@
                 android:src="@drawable/ic_menu_24px" />
 
             <TextView
-                android:id="@+id/toolbar_title"
+                android:id="@+id/main_supporter_panel_toolbar_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="4dp"
-                android:layout_toLeftOf="@id/main_hambergur_ic"
+                android:layout_toLeftOf="@id/main_supporter_panel_navigation_btn"
                 android:fontFamily="@font/iranyekanbold"
                 android:text="در حال اتصال ..."
                 android:textColor="@android:color/white"
                 android:textSize="18sp" />
 
             <ImageView
-                android:id="@+id/searchIcon"
+                android:id="@+id/main_supporter_panel_search_Iv"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_centerVertical="true"
@@ -44,13 +43,13 @@
                 android:src="@drawable/ic_baseline_search_24" />
 
             <EditText
-                android:id="@+id/search_query_ed"
+                android:id="@+id/supporter_search_query_ed"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="4dp"
-                android:layout_toLeftOf="@id/toolbar_title"
-                android:layout_toRightOf="@id/searchIcon"
+                android:layout_toLeftOf="@id/main_supporter_panel_toolbar_title"
+                android:layout_toRightOf="@id/main_supporter_panel_search_Iv"
                 android:background="@null"
                 android:fontFamily="@font/iranyekanbold"
                 android:gravity="right|center"
@@ -73,23 +72,23 @@
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/main_tickets_rv"
+            android:id="@+id/supporter_main_tickets_rv"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="visible" />
 
         <TextView
-            android:id="@+id/emptyState_tv"
+            android:id="@+id/supporter_EmptyState_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:fontFamily="@font/iranyekanbold"
-            android:text="شما هیچ تیکت فعالی ندارید !"
+            android:text="صندوق پاسخگویی شما خالی است !"
             android:textSize="16sp"
             android:visibility="gone" />
 
         <TextView
-            android:id="@+id/noSearchResult_tv"
+            android:id="@+id/supporterNoSearchResult_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
@@ -99,7 +98,7 @@
             android:visibility="gone" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/main_add_New_Ticket_floatingBtn"
+            android:id="@+id/supporter_Main_Add_New_Ticket_ToInbox_FloatingBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"

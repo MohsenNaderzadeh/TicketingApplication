@@ -12,10 +12,13 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="false"
-        android:theme="@style/Theme.ContactUs">
-        <activity android:name=".feature.supporterlogin.SupporterLoginActivity"></activity>
+        android:allowClearUserData="true"
+        android:theme="@style/Theme.ContactUs"
+        android:usesCleartextTraffic="true">
+        <activity android:name=".feature.supportermain.SupporterMainAcitivity"></activity>
+        <activity android:name=".feature.supporterlogin.SupporterLoginActivity" />
         <activity android:name=".feature.ForgetPassword.ForgetPasswordActivity" />
-        <activity android:name=".feature.loginuser.UserLoginActivity">
+        <activity android:name=".feature.studentlogin.UserLoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -28,7 +31,7 @@
 
         <receiver android:name=".feature.receviers.InternetConnectionBroadCastReciever" />
 
-        <activity android:name=".feature.main.TicketsListActivity" />
+        <activity android:name=".feature.studentmain.TicketsListActivity" />
     </application>
 
 </manifest>

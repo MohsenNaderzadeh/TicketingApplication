@@ -2,16 +2,16 @@ package com.example.contactus.feature.data.entities;
 
 import com.google.gson.annotations.SerializedName;
 
-public class TicketsItem {
+public class SupporterTicketsItem {
+
+    @SerializedName("AddedDate")
+    private String addedDate;
 
     @SerializedName("TicketId")
     private int ticketId;
 
     @SerializedName("TicketOwnerId")
     private int ticketOwnerId;
-
-    @SerializedName("TicketLastMessage")
-    private Message ticketLastMessage;
 
     @SerializedName("TicketRelatedAdministrativeDepartemantId")
     private int ticketRelatedAdministrativeDepartemantId;
@@ -22,8 +22,18 @@ public class TicketsItem {
     @SerializedName("TicketStatus")
     private int ticketStatus;
 
+    @SerializedName("TicketInBoxId")
+    private int ticketInBoxId;
+
     @SerializedName("TicketSubmitDate")
     private String ticketSubmitDate;
+
+    @SerializedName("TicketLastMessage")
+    private Message ticketLastMessage;
+
+    public String getAddedDate() {
+        return addedDate;
+    }
 
     public int getTicketId() {
         return ticketId;
@@ -31,10 +41,6 @@ public class TicketsItem {
 
     public int getTicketOwnerId() {
         return ticketOwnerId;
-    }
-
-    public Message getTicketLastMessage() {
-        return ticketLastMessage;
     }
 
     public int getTicketRelatedAdministrativeDepartemantId() {
@@ -49,7 +55,19 @@ public class TicketsItem {
         return ticketStatus;
     }
 
+    public int getTicketInBoxId() {
+        return ticketInBoxId;
+    }
+
     public String getTicketSubmitDate() {
         return ticketSubmitDate;
+    }
+
+    public Message getTicketLastMessage() {
+        return ticketLastMessage;
+    }
+
+    public void setTicketLastMessage(Message ticketLastMessage) {
+        this.ticketLastMessage = ticketLastMessage;
     }
 }

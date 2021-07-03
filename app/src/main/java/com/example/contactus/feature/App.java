@@ -6,8 +6,6 @@ import com.example.contactus.feature.data.TokenContainer;
 import com.example.contactus.feature.data.dataSource.UserInfoManager;
 
 public class App extends Application {
-
-
     @Override
     public void onCreate() {
         super.onCreate();

@@ -1,15 +1,16 @@
 package com.example.contactus.feature.data.dataSource.repo;
 
-import com.example.contactus.feature.data.dataSource.CloudDataSource;
+import com.example.contactus.feature.data.dataSource.TicketsCloudDataSource;
 import com.example.contactus.feature.data.entities.AddTicketResponse;
+import com.example.contactus.feature.data.entities.CloseTicketResponse;
 import com.example.contactus.feature.data.entities.TicketsResponse;
 
 import io.reactivex.Single;
 
 public class TicketsRepository implements TicketsDataSource {
-    private final CloudDataSource cloudDataSource;
+    private final TicketsCloudDataSource cloudDataSource;
 
-    public TicketsRepository(CloudDataSource cloudDataSource) {
+    public TicketsRepository(TicketsCloudDataSource cloudDataSource) {
         this.cloudDataSource = cloudDataSource;
     }
 
@@ -21,5 +22,10 @@ public class TicketsRepository implements TicketsDataSource {
     @Override
     public Single<AddTicketResponse> submitNewTicket(String ticketTitle, int relatedDepartemantId) {
         return cloudDataSource.submitNewTicket(ticketTitle, relatedDepartemantId);
+    }
+
+    @Override
+    public Single<CloseTicketResponse> closeTicket(int ticketId) {
+        return cloudDataSource.closeTicket(ticketId);
     }
 }

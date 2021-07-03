@@ -1,4 +1,4 @@
-package com.example.contactus.feature.main;
+package com.example.contactus.feature.studentmain;
 
 import com.example.contactus.feature.base.BaseViewModel;
 import com.example.contactus.feature.data.dataSource.repo.TicketsRepository;

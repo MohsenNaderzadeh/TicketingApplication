@@ -1,4 +1,4 @@
-package com.example.contactus.feature.main.adapter;
+package com.example.contactus.feature.supportermain.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -12,44 +12,44 @@ import androidx.annotation.NonNull;
 import com.example.contactus.R;
 import com.example.contactus.feature.base.RvAdapter;
 import com.example.contactus.feature.base.RvViewHolder;
-import com.example.contactus.feature.data.entities.TicketInfo;
+import com.example.contactus.feature.data.entities.SupporterTicketsItem;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class TicketListAdapter extends RvAdapter<TicketInfo, TicketListAdapter.TicketListViewHolder> {
+public class SupporterInboxTicketsListAdapter extends RvAdapter<SupporterTicketsItem, SupporterInboxTicketsListAdapter.TicketListViewHolder> {
 
-    private final List<TicketInfo> filteredList = new ArrayList<>();
-    private List<TicketInfo> mainList = new ArrayList<>();
+    private final List<SupporterTicketsItem> filteredList = new ArrayList<>();
+    private List<SupporterTicketsItem> mainList = new ArrayList<>();
     private Context context;
     private boolean isSearchBoxEmpty = false;
     private OnSearchCallBack onSearchCallBack;
 
-    public TicketListAdapter(List<TicketInfo> items) {
+    public SupporterInboxTicketsListAdapter(List<SupporterTicketsItem> items) {
         super(items);
         this.mainList = items;
     }
 
-    public TicketListAdapter() {
+    public SupporterInboxTicketsListAdapter() {
     }
 
 
-    public TicketListAdapter(Context context) {
+    public SupporterInboxTicketsListAdapter(Context context) {
         this.context = context;
     }
 
-    public List<TicketInfo> getFilteredList() {
+    public List<SupporterTicketsItem> getFilteredList() {
         return filteredList;
     }
 
     @Override
-    public void setItems(List<TicketInfo> items) {
+    public void setItems(List<SupporterTicketsItem> items) {
         super.setItems(items);
         this.mainList = items;
     }
 
-    public List<TicketInfo> getMainList() {
+    public List<SupporterTicketsItem> getMainList() {
         return mainList;
     }
 
@@ -64,16 +64,15 @@ public class TicketListAdapter extends RvAdapter<TicketInfo, TicketListAdapter.T
         return new Filter() {
             @Override
             protected FilterResults performFiltering(CharSequence charSequence) {
-                if(charSequence.toString().isEmpty()) {
+                if (charSequence.toString().isEmpty()) {
                     filteredList.clear();
 
                     isSearchBoxEmpty = true;
 
 
-                }else
-                {
+                } else {
                     filteredList.clear();
-                    for (TicketInfo ticketResponse : mainList) {
+                    for (SupporterTicketsItem ticketResponse : mainList) {
                         if (ticketResponse.getTicketTitle().contains(charSequence.toString())) {
                             if (!filteredList.contains(ticketResponse)) {
                                 filteredList.add(ticketResponse);
@@ -83,20 +82,19 @@ public class TicketListAdapter extends RvAdapter<TicketInfo, TicketListAdapter.T
                     }
 
                 }
-                FilterResults filterResults=new FilterResults();
-                filterResults.values=filterResults;
+                FilterResults filterResults = new FilterResults();
+                filterResults.values = filterResults;
                 return filterResults;
             }
 
             @Override
             protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-                if(filteredList.size()>0) {
+                if (filteredList.size() > 0) {
                     if (onSearchCallBack != null) {
                         onSearchCallBack.searchHasResult();
                     }
-                    TicketListAdapter.super.setItems(filteredList);
-                }
-                else {
+                    SupporterInboxTicketsListAdapter.super.setItems(filteredList);
+                } else {
                     if (onSearchCallBack != null) {
                         if (!isSearchBoxEmpty) {
                             onSearchCallBack.searchHasNoResult();
@@ -122,7 +120,7 @@ public class TicketListAdapter extends RvAdapter<TicketInfo, TicketListAdapter.T
         void searchBoxNoValue();
     }
 
-    public class TicketListViewHolder extends RvViewHolder<TicketInfo> {
+    public class TicketListViewHolder extends RvViewHolder<SupporterTicketsItem> {
         private final TextView ticket_short_title_tv;
         private final TextView ticket_title;
         private final TextView ticket_desc_tv;
@@ -142,16 +140,23 @@ public class TicketListAdapter extends RvAdapter<TicketInfo, TicketListAdapter.T
             sender_type_tv = itemView.findViewById(R.id.sender_type_tv);
         }
 
-
         @Override
-        public void bindData(TicketInfo item) {
-            ticket_short_title_tv.setText(item.getTicketTitle().substring(0, 2));
+        public void bindData(SupporterTicketsItem item) {
+            ticket_short_title_tv.setText(item.getTicketTitle().substring(0, 1));
             ticket_title.setText(item.getTicketTitle());
             ticket_desc_tv.setText(item.getTicketLastMessage().getMessageText());
             ticket_status_value_tv.setText(getTicketStatus(item.getTicketStatus(), ticket_status_value_tv));
-            ticket_card.setOnClickListener(view -> onRvItemsClickListener.OnItemClicked(item, getAdapterPosition()));
+            ticket_card.setOnClickListener(view -> {
+                if (onRvItemsClickListener != null) {
+                    onRvItemsClickListener.OnItemClicked(item, getAdapterPosition());
+                }
+            });
             if (item.getTicketLastMessage().getMessageSendType() == 1) {
                 sender_type_tv.setVisibility(View.VISIBLE);
+                sender_type_tv.setText("دانشجو : ");
+            } else {
+                sender_type_tv.setVisibility(View.VISIBLE);
+                sender_type_tv.setText("شما : ");
             }
         }
 
@@ -166,6 +171,10 @@ public class TicketListAdapter extends RvAdapter<TicketInfo, TicketListAdapter.T
                 case 3:
                     ticket_status_value_tv.setTextColor(context.getResources().getColor(R.color.studentTicketInProgressTicketStatucColor));
                     return "در دست پیگیری";
+                case 4:
+                    return "بسته شده توسط دانشجو";
+                case 5:
+                    return "بسته شده توسط اپراتور";
             }
             return null;
         }

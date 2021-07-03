@@ -1,4 +1,4 @@
-package com.example.contactus.feature.main.adapter;
+package com.example.contactus.feature.studentmain.adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;

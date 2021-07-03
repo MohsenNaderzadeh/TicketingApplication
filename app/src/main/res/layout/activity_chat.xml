@@ -77,11 +77,30 @@
             android:layout_height="match_parent">
 
             <RelativeLayout
+                android:id="@+id/ticket_closed_message_container"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_alignParentBottom="true"
+                android:background="@android:color/white"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/ticket_closed_message_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:fontFamily="@font/iranyekanbold"
+                    android:textColor="@color/orange_700"
+                    tools:text="این تیکت توسط دانشجو بسته شده است" />
+            </RelativeLayout>
+
+            <RelativeLayout
                 android:id="@+id/chat_message_rl"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
-                android:layout_marginBottom="4dp">
+                android:layout_marginBottom="4dp"
+                android:visibility="gone">
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
                     android:id="@+id/chat_send_message_iv"
@@ -152,6 +171,13 @@
                 android:visibility="visible"
                 android:textColor="@android:color/white"
                 android:textSize="14sp" />
+
+            <ProgressBar
+                android:id="@+id/loadingMessage_ProgressBar"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_centerInParent="true"
+                android:visibility="gone" />
 
         </RelativeLayout>
 

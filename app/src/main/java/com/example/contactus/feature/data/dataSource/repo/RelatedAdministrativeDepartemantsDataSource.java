@@ -6,7 +6,7 @@ import java.util.List;
 
 import io.reactivex.Single;
 
-public interface TicketsSubjectDataSource {
+public interface RelatedAdministrativeDepartemantsDataSource {
 
 
     Single<List<RelatedDepartemants>> getAllSubjects();

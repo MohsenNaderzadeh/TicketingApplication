@@ -1,4 +1,4 @@
-package com.example.contactus.feature.main;
+package com.example.contactus.feature.studentmain;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -19,7 +19,7 @@ import com.example.contactus.R;
 import com.example.contactus.feature.base.MSingleObserver;
 import com.example.contactus.feature.base.MyTextWatcher;
 import com.example.contactus.feature.data.api.ApiServiceProvider;
-import com.example.contactus.feature.data.dataSource.CloudDataSource;
+import com.example.contactus.feature.data.dataSource.RelatedAdministrativeDepartemantsCloudDataSource;
 import com.example.contactus.feature.data.entities.RelatedDepartemants;
 
 import java.util.ArrayList;
@@ -52,7 +52,7 @@ public class AddNewTicketDialog extends DialogFragment implements AdapterView.On
         relatedDepartemantsList.add(new RelatedDepartemants("لطفا اداره مربوطه را انتخاب نمایید", -1));
         relatedDepartemantSpinner.setSelection(0);
         relatedDepartemantSpinner.setEnabled(false);
-        CloudDataSource cloudDataSource = new CloudDataSource(ApiServiceProvider.getApiService());
+        RelatedAdministrativeDepartemantsCloudDataSource cloudDataSource = new RelatedAdministrativeDepartemantsCloudDataSource(ApiServiceProvider.getApiService());
         cloudDataSource.getAllSubjects()
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())

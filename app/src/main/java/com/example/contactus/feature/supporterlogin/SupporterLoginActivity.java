@@ -1,5 +1,6 @@
 package com.example.contactus.feature.supporterlogin;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.view.View;
@@ -7,13 +8,19 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.example.contactus.R;
-import com.example.contactus.feature.base.MyCompletableObserver;
+import com.example.contactus.feature.base.MSingleObserver;
 import com.example.contactus.feature.base.MyTextWatcher;
 import com.example.contactus.feature.base.ObserverActivity;
+import com.example.contactus.feature.data.TokenContainer;
 import com.example.contactus.feature.data.api.ApiServiceProvider;
-import com.example.contactus.feature.data.dataSource.CloudDataSource;
+import com.example.contactus.feature.data.dataSource.AuthenticationCloudDataSource;
+import com.example.contactus.feature.data.dataSource.UserInfoManager;
+import com.example.contactus.feature.data.entities.LoginResponse;
+import com.example.contactus.feature.supportermain.SupporterMainAcitivity;
+import com.example.contactus.feature.view.ErrorDialogFragment;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
 import io.reactivex.schedulers.Schedulers;
 
 public class SupporterLoginActivity extends ObserverActivity {
@@ -35,11 +42,35 @@ public class SupporterLoginActivity extends ObserverActivity {
             supporterLoginViewModel.authenticate(Supporter_Username_ed_login.getText().toString(), Supporter_password_ed_login.getText().toString())
                     .subscribeOn(Schedulers.newThread())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new MyCompletableObserver(compositeDisposable) {
+                    .subscribe(new MSingleObserver<LoginResponse>(compositeDisposable) {
                         @Override
-                        public void onComplete() {
+                        public void onSuccess(LoginResponse loginResponse) {
+                            if (loginResponse.isSuccess()) {
+                                UserInfoManager userInfoManager = new UserInfoManager(SupporterLoginActivity.this);
+                                userInfoManager.setTokenInSharedPref(loginResponse.getToken());
+                                userInfoManager.setIsUserInSharedPref(false);
+                                TokenContainer.setIsUser(false);
+                                TokenContainer.updateToken(loginResponse.getToken());
+
+                                Intent ticketsListActivity = new Intent(SupporterLoginActivity.this, SupporterMainAcitivity.class);
+                                startActivity(ticketsListActivity);
+
+                                loadingDialogFragment.dismiss();
 
 
+                            } else {
+                                loadingDialogFragment.dismiss();
+                                ErrorDialogFragment errorDialogFragment = ErrorDialogFragment.newInstance(loginResponse.getErrorMessage());
+                                errorDialogFragment.show(getSupportFragmentManager(), null);
+                            }
+                        }
+
+                        @Override
+                        public void onError(@NonNull Throwable e) {
+                            super.onError(e);
+                            loadingDialogFragment.dismiss();
+                            ErrorDialogFragment errorDialogFragment = ErrorDialogFragment.newInstance("خطای ناشناخته");
+                            errorDialogFragment.show(getSupportFragmentManager(), null);
                         }
                     });
         });
@@ -64,7 +95,7 @@ public class SupporterLoginActivity extends ObserverActivity {
         Supporter_Username_ed_login = findViewById(R.id.Supporter_Username_ed_login);
         Supporter_password_ed_login = findViewById(R.id.Supporter_password_ed_login);
         Supporter_login_btn = findViewById(R.id.Supporter_login_btn);
-        supporterLoginViewModel = new SupporterLoginViewModel(new CloudDataSource(ApiServiceProvider.getApiService()), this);
+        supporterLoginViewModel = new SupporterLoginViewModel(new AuthenticationCloudDataSource(ApiServiceProvider.getApiService()), this);
         Supporter_Username_ed_login.addTextChangedListener(new MyTextWatcher() {
             @Override
             public void afterTextChanged(Editable editable) {

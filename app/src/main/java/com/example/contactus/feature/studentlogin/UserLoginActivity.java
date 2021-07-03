@@ -1,4 +1,4 @@
-package com.example.contactus.feature.loginuser;
+package com.example.contactus.feature.studentlogin;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,13 +14,13 @@ import com.example.contactus.feature.base.MyTextWatcher;
 import com.example.contactus.feature.base.ObserverActivity;
 import com.example.contactus.feature.data.TokenContainer;
 import com.example.contactus.feature.data.api.ApiServiceProvider;
-import com.example.contactus.feature.data.dataSource.CloudDataSource;
+import com.example.contactus.feature.data.dataSource.AuthenticationCloudDataSource;
 import com.example.contactus.feature.data.dataSource.UserInfoManager;
 import com.example.contactus.feature.data.dataSource.repo.AuthenticateRepo;
 import com.example.contactus.feature.data.entities.LoginResponse;
 import com.example.contactus.feature.eventbusevents.ConnectedInternet;
 import com.example.contactus.feature.eventbusevents.DisConnectedInternet;
-import com.example.contactus.feature.main.TicketsListActivity;
+import com.example.contactus.feature.studentmain.TicketsListActivity;
 import com.example.contactus.feature.supporterlogin.SupporterLoginActivity;
 import com.example.contactus.feature.view.ErrorDialogFragment;
 
@@ -90,7 +90,7 @@ public class UserLoginActivity extends ObserverActivity {
 
     @Override
     public void setUpViews() {
-        userLoginViewModel = new UserLoginViewModel(new AuthenticateRepo(new CloudDataSource(ApiServiceProvider.getApiService())), this);
+        userLoginViewModel = new UserLoginViewModel(new AuthenticateRepo(new AuthenticationCloudDataSource(ApiServiceProvider.getApiService())), this);
         username_ed_login = findViewById(R.id.username_ed_login);
         password_ed_login = findViewById(R.id.password_ed_login);
         btn_login = findViewById(R.id.btn_login);
