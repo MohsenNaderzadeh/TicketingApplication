@@ -32,10 +32,20 @@ public class TicketInfo implements Parcelable {
     private String ticketSubmitDate;
     @SerializedName("TicketLastMessage")
     private Message TicketLastMessage;
-
+    
     public TicketInfo() {
     }
-
+    
+    public TicketInfo(int ticketId, int ticketOwnerId, int ticketRelatedAdministrativeDepartemantId, String ticketTitle, int ticketStatus, String ticketSubmitDate, Message ticketLastMessage) {
+        this.ticketId = ticketId;
+        this.ticketOwnerId = ticketOwnerId;
+        this.ticketRelatedAdministrativeDepartemantId = ticketRelatedAdministrativeDepartemantId;
+        this.ticketTitle = ticketTitle;
+        this.ticketStatus = ticketStatus;
+        this.ticketSubmitDate = ticketSubmitDate;
+        TicketLastMessage = ticketLastMessage;
+    }
+    
     protected TicketInfo(Parcel in) {
         this.ticketId = in.readInt();
         this.ticketOwnerId = in.readInt();
@@ -44,7 +54,7 @@ public class TicketInfo implements Parcelable {
         this.ticketStatus = in.readInt();
         this.ticketSubmitDate = in.readString();
     }
-
+    
     public Message getTicketLastMessage() {
         return TicketLastMessage;
     }

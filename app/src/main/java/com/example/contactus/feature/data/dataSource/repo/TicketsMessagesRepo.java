@@ -14,12 +14,12 @@ public class TicketsMessagesRepo implements TicketsMessagesDataSource {
     }
 
     @Override
-    public Single<SubmitNewTicketMessageResponse> submitNewMessageOfTicket(int studentId, int messageSendType, String messageText, int ticketId) {
-        return cloudDataSource.submitNewMessageOfTicket(studentId, messageSendType, messageText, ticketId);
+    public Single<SubmitNewTicketMessageResponse> submitNewMessageOfTicket(int studentId, int messageSendType, String messageText, int ticketId, AuthenticateDataSource.UserType userType, int CoworkerId) {
+        return cloudDataSource.submitNewMessageOfTicket(studentId, messageSendType, messageText, ticketId, userType, CoworkerId);
     }
-
+    
     @Override
-    public Single<MessageListResponse> getTicketsMessages(int ticketsId) {
-        return cloudDataSource.getTicketsMessages(ticketsId);
+    public Single<MessageListResponse> getTicketsMessages(int ticketsId, AuthenticateDataSource.UserType userType) {
+        return cloudDataSource.getTicketsMessages(ticketsId, userType);
     }
 }

@@ -90,17 +90,7 @@
             android:padding="16dp"
             android:text="ورود به حساب کاربری" />
 
-        <TextView
-            android:id="@+id/SupporterForgetPassword_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/Supporter_login_btn"
-            android:layout_centerInParent="true"
-            android:layout_centerVertical="true"
-            android:layout_marginBottom="16dp"
-            android:fontFamily="@font/iranyekanbold"
-            android:text="رمز عبور خود را فراموش کرده ام "
-            android:textSize="14sp" />
+
     </RelativeLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

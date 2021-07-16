@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".feature.departemantsTicketsList.DepartemantsOpenTicketsActivity">
+    
+    
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:background="@color/orange_500">
+            
+            <TextView
+                android:id="@+id/main_supporter_departemants_openTickets_toolbar_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="4dp"
+                android:layout_marginRight="8dp"
+                android:fontFamily="@font/iranyekanbold"
+                android:text="در حال اتصال ..."
+                android:textColor="@android:color/white"
+                android:textSize="18sp" />
+        </RelativeLayout>
+    </com.google.android.material.appbar.AppBarLayout>
+    
+    <RelativeLayout
+        android:id="@+id/main_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+        
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/departemants_openticketsList_rv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+        
+        <TextView
+            android:id="@+id/supporter_departemantsTickets_EmptyState_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:fontFamily="@font/iranyekanbold"
+            android:text="تیکت بازی در حال حاضر برای دپارتمان اداری شما وجود ندارد."
+            android:textSize="16sp"
+            android:visibility="gone" />
+    </RelativeLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

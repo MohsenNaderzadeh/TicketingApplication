@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    
+    
+    <item
+        android:id="@+id/changeTicketStat"
+        android:title="تغییر وضعیت تیکت" />
+    <item
+        android:id="@+id/close_ticket"
+        android:title="بستن تیکت" />
+
+</menu>

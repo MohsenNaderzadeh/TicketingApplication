@@ -3,6 +3,7 @@ package com.example.contactus.feature.data.dataSource;
 import com.example.contactus.feature.data.api.ApiService;
 import com.example.contactus.feature.data.dataSource.repo.TicketsDataSource;
 import com.example.contactus.feature.data.entities.AddTicketResponse;
+import com.example.contactus.feature.data.entities.AddToSupporterInboxResponse;
 import com.example.contactus.feature.data.entities.CloseTicketResponse;
 import com.example.contactus.feature.data.entities.TicketsResponse;
 
@@ -20,16 +21,21 @@ public class TicketsCloudDataSource implements TicketsDataSource {
     public Single<TicketsResponse> getTicketList() {
         return apiService.getAllTicketsList();
     }
-
+    
     @Override
     public Single<AddTicketResponse> submitNewTicket(String ticketTitle, int relatedDepartemantId) {
         return apiService.submitNewTicket(ticketTitle, relatedDepartemantId);
     }
-
+    
     @Override
     public Single<CloseTicketResponse> closeTicket(int ticketId) {
         return apiService.closeTicket(ticketId);
     }
-
-
+    
+    @Override
+    public Single<AddToSupporterInboxResponse> addTicketToInbox(int ticketId) {
+        return apiService.addTicketToInbox(ticketId);
+    }
+    
+    
 }

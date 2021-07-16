@@ -19,9 +19,9 @@ public class RetrofitProvider {
                     .addInterceptor(chain -> {
                         Request oldrequest = chain.request();
                         Request.Builder newRequest = oldrequest.newBuilder();
-                        if (TokenContainer.getToken() != null && TokenContainer.isIsUser()) {
+                        if (TokenContainer.getToken() != null && TokenContainer.isStudent()) {
                             newRequest.addHeader("Authorization", TokenContainer.getToken());
-                        } else if (TokenContainer.getToken() != null && !TokenContainer.isIsUser()) {
+                        } else if (TokenContainer.getToken() != null && TokenContainer.isIsSupporter()) {
                             newRequest.addHeader("supporter_auth", TokenContainer.getToken());
                         }
                         newRequest.addHeader("Accept", "application/json");

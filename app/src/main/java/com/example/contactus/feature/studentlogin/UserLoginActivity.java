@@ -8,16 +8,15 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.example.contactus.R;
-import com.example.contactus.feature.ForgetPassword.ForgetPasswordActivity;
 import com.example.contactus.feature.base.MSingleObserver;
 import com.example.contactus.feature.base.MyTextWatcher;
 import com.example.contactus.feature.base.ObserverActivity;
 import com.example.contactus.feature.data.TokenContainer;
 import com.example.contactus.feature.data.api.ApiServiceProvider;
 import com.example.contactus.feature.data.dataSource.AuthenticationCloudDataSource;
-import com.example.contactus.feature.data.dataSource.UserInfoManager;
 import com.example.contactus.feature.data.dataSource.repo.AuthenticateRepo;
 import com.example.contactus.feature.data.entities.LoginResponse;
+import com.example.contactus.feature.data.sharedPrefrences.SharedPrefrencesManager;
 import com.example.contactus.feature.eventbusevents.ConnectedInternet;
 import com.example.contactus.feature.eventbusevents.DisConnectedInternet;
 import com.example.contactus.feature.studentmain.TicketsListActivity;
@@ -43,7 +42,6 @@ public class UserLoginActivity extends ObserverActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
     }
-
     @Override
     public void observe() {
         btn_login.setOnClickListener(view -> {
@@ -56,18 +54,21 @@ public class UserLoginActivity extends ObserverActivity {
                         public void onSuccess(@NonNull LoginResponse loginResponse) {
 
                             if (loginResponse.isSuccess()) {
-                                UserInfoManager userInfoManager = new UserInfoManager(UserLoginActivity.this);
-                                userInfoManager.setTokenInSharedPref(loginResponse.getToken());
-                                userInfoManager.setIsUserInSharedPref(true);
-                                TokenContainer.setIsUser(true);
+                                SharedPrefrencesManager sharedPrefrencesManager = new SharedPrefrencesManager(UserLoginActivity.this);
+                                sharedPrefrencesManager.setTokenInSharedPref(loginResponse.getToken());
+                                sharedPrefrencesManager.setIsStudentInSharedPref(true);
+                                sharedPrefrencesManager.setIsLoggedIn(true);
+                                TokenContainer.setIsStudent(true);
+                                TokenContainer.setIsSupporter(false);
                                 TokenContainer.updateToken(loginResponse.getToken());
-
+    
                                 Intent ticketsListActivity = new Intent(UserLoginActivity.this, TicketsListActivity.class);
                                 startActivity(ticketsListActivity);
-
+    
                                 loadingDialogFragment.dismiss();
-
-
+                                finish();
+    
+    
                             } else {
                                 loadingDialogFragment.dismiss();
                                 ErrorDialogFragment errorDialogFragment = ErrorDialogFragment.newInstance(loginResponse.getErrorMessage());
@@ -94,7 +95,7 @@ public class UserLoginActivity extends ObserverActivity {
         username_ed_login = findViewById(R.id.username_ed_login);
         password_ed_login = findViewById(R.id.password_ed_login);
         btn_login = findViewById(R.id.btn_login);
-        UserForgetPassword_tv = findViewById(R.id.UserForgetPassword_tv);
+        //UserForgetPassword_tv = findViewById(R.id.UserForgetPassword_tv);
         Supporterlogintv = findViewById(R.id.Supporterlogintv);
         username_ed_login.addTextChangedListener(new MyTextWatcher() {
             @Override
@@ -108,12 +109,8 @@ public class UserLoginActivity extends ObserverActivity {
                 btn_login.setEnabled(editable.length() > 0 && username_ed_login.getText().toString().length() > 0);
             }
         });
-
-        UserForgetPassword_tv.setOnClickListener(view -> {
-            Intent forgetPasswordIntent = new Intent(UserLoginActivity.this, ForgetPasswordActivity.class);
-            startActivity(forgetPasswordIntent);
-        });
-
+    
+    
         Supporterlogintv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -23,17 +23,24 @@ import com.example.contactus.feature.base.MyTextWatcher;
 import com.example.contactus.feature.base.ObserverActivity;
 import com.example.contactus.feature.base.OnRvItemsClickListener;
 import com.example.contactus.feature.chat.ChatActivity;
+import com.example.contactus.feature.data.TokenContainer;
 import com.example.contactus.feature.data.api.ApiServiceProvider;
+import com.example.contactus.feature.data.dataSource.AuthenticationCloudDataSource;
+import com.example.contactus.feature.data.dataSource.LocalDataSource;
 import com.example.contactus.feature.data.dataSource.TicketsCloudDataSource;
+import com.example.contactus.feature.data.dataSource.repo.AuthenticateRepo;
 import com.example.contactus.feature.data.dataSource.repo.TicketsRepository;
+import com.example.contactus.feature.data.entities.LogoutResponse;
 import com.example.contactus.feature.data.entities.MenuItem;
 import com.example.contactus.feature.data.entities.RelatedDepartemants;
 import com.example.contactus.feature.data.entities.TicketInfo;
 import com.example.contactus.feature.data.entities.TicketsResponse;
+import com.example.contactus.feature.data.sharedPrefrences.SharedPrefManagerSingletone;
 import com.example.contactus.feature.eventbusevents.ConnectedInternet;
 import com.example.contactus.feature.eventbusevents.DisConnectedInternet;
 import com.example.contactus.feature.studentmain.adapter.NavigationMenuListAdapter;
 import com.example.contactus.feature.studentmain.adapter.TicketListAdapter;
+import com.example.contactus.feature.view.LoadingDialogFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +49,8 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
 public class TicketsListActivity extends ObserverActivity implements OnRvItemsClickListener<TicketInfo>, AddNewTicketDialog.OnTicketsCreationFirstStepCompeleted {
-
+    
+    private static final String TAG = "TicketsListActivity";
     private RecyclerView main_tickets_rv;
     private View main_add_New_Ticket_floatingBtn;
     private TicketListAdapter ticketListAdapter;
@@ -74,7 +82,7 @@ public class TicketsListActivity extends ObserverActivity implements OnRvItemsCl
         noSearchResult_tv = findViewById(R.id.noSearchResult_tv);
         main_tickets_rv = findViewById(R.id.main_tickets_rv);
         emptyState_tv = findViewById(R.id.emptyState_tv);
-        ticketListViewModel = new TicketListViewModel(new TicketsRepository(new TicketsCloudDataSource(ApiServiceProvider.getApiService())));
+        ticketListViewModel = new TicketListViewModel(new TicketsRepository(new TicketsCloudDataSource(ApiServiceProvider.getApiService())), new AuthenticateRepo(new AuthenticationCloudDataSource(ApiServiceProvider.getApiService())), new LocalDataSource(SharedPrefManagerSingletone.getSharedPrefrencesManager(this)));
         main_add_New_Ticket_floatingBtn = findViewById(R.id.main_add_New_Ticket_floatingBtn);
         searchIcon = findViewById(R.id.searchIcon);
         search_query_ed = findViewById(R.id.search_query_ed);
@@ -93,6 +101,7 @@ public class TicketsListActivity extends ObserverActivity implements OnRvItemsCl
                 .shimmer(true)
                 .show();
         setupDrawerItems();
+    
         searchIcon.setOnClickListener(view -> {
             if (!isInSearchMode) {
                 isInSearchMode = true;
@@ -277,21 +286,44 @@ public class TicketsListActivity extends ObserverActivity implements OnRvItemsCl
         contactUs.setItemIcon(R.drawable.ic_baseline_local_phone_24);
         contactUs.setItemText("تماس با ما");
         menuItemList.add(contactUs);
-
-
+    
+    
         MenuItem logOut = new MenuItem();
         logOut.setId(5);
         logOut.setItemIcon(R.drawable.ic_baseline_exit_to_app_24);
         logOut.setItemText("خروج از حساب کاربری");
         menuItemList.add(logOut);
-
-
+    
+    
         navigationMenuListAdapter.setItems(menuItemList);
-        navigationMenuListAdapter.setOnRvItemsClickListener((item, position) -> {
-
-        });
+    
         main_navigation_menu_recyclerview.setAdapter(navigationMenuListAdapter);
-
+    
+        navigationMenuListAdapter.setOnRvItemsClickListener((item, position) -> {
+        
+            if (position == 4) {
+                LoadingDialogFragment loadingDialogFragment = new LoadingDialogFragment();
+                loadingDialogFragment.show(getSupportFragmentManager(), null);
+                ticketListViewModel.logoutButtonClicked()
+                        .subscribeOn(Schedulers.newThread())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new MSingleObserver<LogoutResponse>(compositeDisposable) {
+                            @Override
+                            public void onSuccess(LogoutResponse logoutResponse) {
+                                if (logoutResponse.isSuccess()) {
+                                    loadingDialogFragment.dismiss();
+                                    ticketListViewModel.clearSharedPref();
+                                    TokenContainer.setIsStudent(false);
+                                    TokenContainer.setIsSupporter(false);
+                                    TokenContainer.updateToken(null);
+                                    finish();
+                                }
+                            }
+                        });
+            }
+        
+        });
+    
     }
 
     @Override

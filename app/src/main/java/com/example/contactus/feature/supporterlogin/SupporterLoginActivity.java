@@ -14,8 +14,8 @@ import com.example.contactus.feature.base.ObserverActivity;
 import com.example.contactus.feature.data.TokenContainer;
 import com.example.contactus.feature.data.api.ApiServiceProvider;
 import com.example.contactus.feature.data.dataSource.AuthenticationCloudDataSource;
-import com.example.contactus.feature.data.dataSource.UserInfoManager;
 import com.example.contactus.feature.data.entities.LoginResponse;
+import com.example.contactus.feature.data.sharedPrefrences.SharedPrefrencesManager;
 import com.example.contactus.feature.supportermain.SupporterMainAcitivity;
 import com.example.contactus.feature.view.ErrorDialogFragment;
 
@@ -46,18 +46,22 @@ public class SupporterLoginActivity extends ObserverActivity {
                         @Override
                         public void onSuccess(LoginResponse loginResponse) {
                             if (loginResponse.isSuccess()) {
-                                UserInfoManager userInfoManager = new UserInfoManager(SupporterLoginActivity.this);
-                                userInfoManager.setTokenInSharedPref(loginResponse.getToken());
-                                userInfoManager.setIsUserInSharedPref(false);
-                                TokenContainer.setIsUser(false);
+                                SharedPrefrencesManager sharedPrefrencesManager = new SharedPrefrencesManager(SupporterLoginActivity.this);
+                                sharedPrefrencesManager.setTokenInSharedPref(loginResponse.getToken());
+                                sharedPrefrencesManager.setIsStudentInSharedPref(false);
+                                sharedPrefrencesManager.setIsSupporter(true);
+                                sharedPrefrencesManager.setIsLoggedIn(true);
+                                TokenContainer.setIsSupporter(true);
+                                TokenContainer.setIsStudent(false);
                                 TokenContainer.updateToken(loginResponse.getToken());
-
+    
                                 Intent ticketsListActivity = new Intent(SupporterLoginActivity.this, SupporterMainAcitivity.class);
+                                finish();
                                 startActivity(ticketsListActivity);
-
+    
                                 loadingDialogFragment.dismiss();
-
-
+    
+    
                             } else {
                                 loadingDialogFragment.dismiss();
                                 ErrorDialogFragment errorDialogFragment = ErrorDialogFragment.newInstance(loginResponse.getErrorMessage());

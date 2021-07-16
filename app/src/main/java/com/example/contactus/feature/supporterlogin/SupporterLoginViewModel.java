@@ -23,4 +23,5 @@ public class SupporterLoginViewModel extends BaseViewModel {
         shouldShowProgressBar.onNext(true);
         return cloudDataSource.authenticate(userName, password, AuthenticateDataSource.UserType.SUPPORTER);
     }
+    
 }

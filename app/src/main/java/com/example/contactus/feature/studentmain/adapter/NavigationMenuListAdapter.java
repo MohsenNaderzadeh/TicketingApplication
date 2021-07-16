@@ -43,6 +43,12 @@ public class NavigationMenuListAdapter extends RvAdapter<MenuItem, NavigationMen
         public void bindData(MenuItem item) {
             item_main_navigation_item_icon_Iv.setImageResource(item.getItemIcon());
             item_main_navigation_item_title_tv.setText(item.getItemText());
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    onRvItemsClickListener.OnItemClicked(item, getAdapterPosition());
+                }
+            });
         }
     }
 }

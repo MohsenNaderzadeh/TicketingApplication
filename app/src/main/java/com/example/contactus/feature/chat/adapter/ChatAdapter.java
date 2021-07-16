@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.contactus.R;
 import com.example.contactus.feature.base.RvViewHolder;
+import com.example.contactus.feature.data.TokenContainer;
 import com.example.contactus.feature.data.entities.Message;
 
 import java.util.ArrayList;
@@ -43,7 +44,9 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public int getItemViewType(int position) {
-        if (messageList.get(position).getMessageSendType() == 1) {
+        if (messageList.get(position).getMessageSendType() == 1 && TokenContainer.isStudent()) {
+            return STD_USER_MESSAGE_TYPE;
+        } else if (messageList.get(position).getMessageSendType() == 0 && TokenContainer.isIsSupporter()) {
             return STD_USER_MESSAGE_TYPE;
         } else {
             return USER_MESSAGE_TYPE;
