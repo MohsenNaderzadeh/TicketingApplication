@@ -89,7 +89,9 @@ public class SupporterMainAcitivity extends ObserverActivity implements OnRvItem
                             if (supporterTicketInboxResponse.getTicketCount() > 0) {
                                 inboxTicketsListAdapter.setItems(supporterTicketInboxResponse.getSupporterTickets());
                                 supporter_EmptyState_tv.setVisibility(View.GONE);
+                                supporter_main_tickets_rv.setVisibility(View.VISIBLE);
                             } else {
+                                supporter_EmptyState_tv.setText("صندوق پاسخگویی شما خالی است.");
                                 supporter_EmptyState_tv.setVisibility(View.VISIBLE);
 
                             }
@@ -212,43 +214,30 @@ public class SupporterMainAcitivity extends ObserverActivity implements OnRvItem
         main_supporter_panel_navigation.setLayoutManager(new LinearLayoutManager(SupporterMainAcitivity.this, RecyclerView.VERTICAL, false));
         List<MenuItem> menuItemList = new ArrayList<>();
         MenuItem MainPage = new MenuItem();
-
+    
         MainPage.setId(1);
         MainPage.setItemIcon(R.drawable.ic_baseline_home_24);
         MainPage.setItemText("صفحه اصلی");
         menuItemList.add(MainPage);
-
-
-        MenuItem SettingItem = new MenuItem();
-        SettingItem.setId(2);
-        SettingItem.setItemIcon(R.drawable.ic_baseline_settings_24);
-        SettingItem.setItemText("تنظیمات");
-        menuItemList.add(SettingItem);
-
-        MenuItem AboutUs = new MenuItem();
-        AboutUs.setId(3);
-        AboutUs.setItemIcon(R.drawable.ic_baseline_group_24);
-        AboutUs.setItemText("درباره ما");
-        menuItemList.add(AboutUs);
-
-        MenuItem contactUs = new MenuItem();
-        contactUs.setId(4);
-        contactUs.setItemIcon(R.drawable.ic_baseline_local_phone_24);
-        contactUs.setItemText("تماس با ما");
-        menuItemList.add(contactUs);
     
+        MenuItem closedTicket = new MenuItem();
+        closedTicket.setId(2);
+        closedTicket.setItemIcon(R.drawable.ic_baseline_local_phone_24);
+        closedTicket.setItemText("تیکت های بسته شده");
+        menuItemList.add(closedTicket);
     
         MenuItem logOut = new MenuItem();
-        logOut.setId(5);
+        logOut.setId(3);
         logOut.setItemIcon(R.drawable.ic_baseline_exit_to_app_24);
         logOut.setItemText("خروج از حساب کاربری");
         menuItemList.add(logOut);
+    
     
         //TODO:Add Onclick Listner for items of navigation menu
         navigationMenuListAdapter.setItems(menuItemList);
         navigationMenuListAdapter.setOnRvItemsClickListener((item, position) -> {
         
-            if (position == 4) {
+            if (item.getId() == 3) {
                 LoadingDialogFragment loadingDialogFragment = new LoadingDialogFragment();
                 loadingDialogFragment.show(getSupportFragmentManager(), null);
                 supporterMainViewModel.logoutButtonClicked()
@@ -267,6 +256,39 @@ public class SupporterMainAcitivity extends ObserverActivity implements OnRvItem
                                 }
                             }
                         });
+            } else if (item.getId() == 2) {
+                LoadingDialogFragment loadingDialogFragment = new LoadingDialogFragment();
+                loadingDialogFragment.show(getSupportFragmentManager(), null);
+                supporter_drawer_layout.closeDrawer(Gravity.RIGHT);
+                supporterMainViewModel.getClosedTickets()
+                        .subscribeOn(Schedulers.newThread())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new MSingleObserver<SupporterTicketInboxResponse>(compositeDisposable) {
+                            @Override
+                            public void onSuccess(SupporterTicketInboxResponse supporterTicketInboxResponse) {
+                                if (supporterTicketInboxResponse.isSuccess()) {
+                                    if (supporterTicketInboxResponse.getTicketCount() > 0) {
+                                        inboxTicketsListAdapter.setItems(supporterTicketInboxResponse.getSupporterTickets());
+                                        supporter_EmptyState_tv.setVisibility(View.GONE);
+                                        loadingDialogFragment.dismiss();
+                                        supporter_main_tickets_rv.setVisibility(View.VISIBLE);
+                                    } else {
+                                        supporter_EmptyState_tv.setText("شما تیکت بسته شده ای ندارید");
+                                        supporter_EmptyState_tv.setVisibility(View.VISIBLE);
+                                        loadingDialogFragment.dismiss();
+                                        supporter_main_tickets_rv.setVisibility(View.GONE);
+                                    
+                                    }
+                                    supporterticketsViewSkeleton.hide();
+                                }
+                            }
+                        });
+            } else if (item.getId() == 1) {
+                LoadingDialogFragment loadingDialogFragment = new LoadingDialogFragment();
+                loadingDialogFragment.show(getSupportFragmentManager(), null);
+                supporter_drawer_layout.closeDrawer(Gravity.RIGHT);
+                observe();
+                loadingDialogFragment.dismiss();
             }
         
         });

@@ -3,10 +3,11 @@
     
     
     <item
-        android:id="@+id/changeTicketStat"
-        android:title="تغییر وضعیت تیکت" />
-    <item
         android:id="@+id/close_ticket"
         android:title="بستن تیکت" />
+    
+    <item
+        android:id="@+id/getOwnerInfo"
+        android:title="مشخصات ایجاد کننده تیکت" />
 
 </menu>

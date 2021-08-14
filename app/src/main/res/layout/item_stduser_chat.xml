@@ -19,7 +19,7 @@
         android:background="@drawable/background_chat_stduser"
         android:fontFamily="@font/iranyekanbold"
         android:paddingTop="8dp"
-        android:paddingEnd="69dp"
+        android:paddingEnd="29dp"
         android:layout_marginStart="90dp"
         android:maxWidth="370dp"
         android:paddingBottom="10dp"
@@ -53,18 +53,8 @@
         android:src="@drawable/fillspace"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/mytail" />
-
-    <TextView
-        android:id="@+id/time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="28dp"
-        android:layout_marginBottom="4dp"
-        android:text="22:30"
-        android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="@id/stdUserChat_text_tv"
-        app:layout_constraintEnd_toEndOf="@id/stdUserChat_text_tv" />
-
+    
+    
     <com.inthecheesefactory.thecheeselibrary.widget.AdjustableImageView
         android:id="@+id/sendStatus_iv"
         android:layout_width="13dp"
@@ -73,7 +63,7 @@
         android:layout_height="13dp"
         android:layout_marginBottom="2dp"
         tools:src="@drawable/unsend"
-        app:layout_constraintBottom_toBottomOf="@id/time"
+        app:layout_constraintBottom_toBottomOf="@id/stdUserChat_text_tv"
         app:layout_constraintEnd_toEndOf="@id/stdUserChat_text_tv" />
 
 

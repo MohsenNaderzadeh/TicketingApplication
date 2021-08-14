@@ -11,6 +11,7 @@ import com.example.contactus.feature.data.entities.CloseTicketResponse;
 import com.example.contactus.feature.data.entities.Message;
 import com.example.contactus.feature.data.entities.MessageListResponse;
 import com.example.contactus.feature.data.entities.SubmitNewTicketMessageResponse;
+import com.example.contactus.feature.data.entities.TicketOwnerInfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,12 +58,21 @@ public class ChatActivityViewModel extends BaseViewModel {
     
     
     public Single<CloseTicketResponse> closeTicket(int ticketId) {
-        return cloudDataSource.closeTicket(ticketId);
+        return cloudDataSource.closeTicket(ticketId, AuthenticateDataSource.UserType.USER);
+    }
+    
+    public Single<CloseTicketResponse> closeTicketBySupporter(int ticketId) {
+        return cloudDataSource.closeTicket(ticketId, AuthenticateDataSource.UserType.SUPPORTER);
     }
     
     
     public Single<AddToSupporterInboxResponse> addTicketToInbox(int ticketId) {
         return cloudDataSource.addTicketToInbox(ticketId);
+    }
+    
+    
+    public Single<TicketOwnerInfo> getTicketOwnerInfo(int ticketOwnerId) {
+        return cloudDataSource.getTicketOwnerInfo(ticketOwnerId);
     }
     
     

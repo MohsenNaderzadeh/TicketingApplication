@@ -11,6 +11,7 @@ import android.widget.PopupMenu;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -33,6 +34,7 @@ import com.example.contactus.feature.data.entities.MessageListResponse;
 import com.example.contactus.feature.data.entities.RelatedDepartemants;
 import com.example.contactus.feature.data.entities.SubmitNewTicketMessageResponse;
 import com.example.contactus.feature.data.entities.TicketInfo;
+import com.example.contactus.feature.data.entities.TicketOwnerInfo;
 import com.example.contactus.feature.eventbusevents.ConnectedInternet;
 import com.example.contactus.feature.eventbusevents.DisConnectedInternet;
 import com.example.contactus.feature.studentmain.TicketsListActivity;
@@ -108,11 +110,11 @@ public class ChatActivity extends ObserverActivity {
                             chatAdapter.setMessageList(messageListResponse.getMessages());
                             chat_ticketsList_rv.setVisibility(View.VISIBLE);
                             loadingMessage_ProgressBar.setVisibility(View.GONE);
-                            if (!originActivity.equals("SupporterMain")) {
+                            if (originActivity == null) {
                                 ticket_closed_message_container.setVisibility(View.VISIBLE);
                                 ticket_closed_message_tv.setText("ابتدا تیکت را به صندوق پاسخگویی خود اضافه کنید");
                                 chat_option_Iv.setVisibility(View.VISIBLE);
-                            } else {
+                            } else if (inputTicket.getTicketStatus() != 4 && inputTicket.getTicketStatus() != 5) {
                                 chat_message_rl.setVisibility(View.VISIBLE);
                             }
                         
@@ -143,6 +145,7 @@ public class ChatActivity extends ObserverActivity {
                                                 Message newMessage = submitNewTicketMessageResponse.getMessage();
                                                 newMessage.setMessageSendStatus(Message.sendStatus.SEND);
                                                 chatAdapter.updateMessage(message, newMessage);
+                                                chat_user_message_ed.setText("");
                                             }
                                         });
                             }
@@ -158,6 +161,7 @@ public class ChatActivity extends ObserverActivity {
                                 Message newMessage = submitNewTicketMessageResponse.getMessage();
                                 newMessage.setMessageSendStatus(Message.sendStatus.SEND);
                                 chatAdapter.addMessage(newMessage);
+                                chat_user_message_ed.setText("");
                             }
                         });
         
@@ -171,6 +175,7 @@ public class ChatActivity extends ObserverActivity {
                                 Message newMessage = submitNewTicketMessageResponse.getMessage();
                                 newMessage.setMessageSendStatus(Message.sendStatus.SEND);
                                 chatAdapter.addMessage(newMessage);
+                                chat_user_message_ed.setText("");
                             }
                         });
             }
@@ -219,6 +224,16 @@ public class ChatActivity extends ObserverActivity {
             ticket_closed_message_container.setVisibility(View.VISIBLE);
             ticket_closed_message_tv.setText("برای پاسخگویی به این تیکت باید ابتدا آن را به صندوق پاسخگویی خود اضافه کنید ");
             chat_option_Iv.setVisibility(View.VISIBLE);
+        } else if (TokenContainer.isIsSupporter() && inputTicket.getTicketStatus() == 4) {
+            chat_message_rl.setVisibility(View.GONE);
+            ticket_closed_message_container.setVisibility(View.VISIBLE);
+            ticket_closed_message_tv.setText("این تیکت توسط دانشجو بسته شده است.");
+            chat_option_Iv.setVisibility(View.GONE);
+        } else if (TokenContainer.isIsSupporter() && inputTicket.getTicketStatus() == 5) {
+            chat_message_rl.setVisibility(View.GONE);
+            ticket_closed_message_container.setVisibility(View.VISIBLE);
+            ticket_closed_message_tv.setText("این تیکت توسط شما بسته شده است.");
+            chat_option_Iv.setVisibility(View.GONE);
         }
 
 
@@ -227,9 +242,8 @@ public class ChatActivity extends ObserverActivity {
             MenuInflater inflater = popup.getMenuInflater();
             if (TokenContainer.isStudent()) {
                 inflater.inflate(R.menu.chat_acitvity_menu, popup.getMenu());
-            } else if (TokenContainer.isIsSupporter() && originActivity.equals("SupporterMain")) {
+            } else if (TokenContainer.isIsSupporter() && inputTicket.getTicketStatus() == 8) {
                 inflater.inflate(R.menu.chat_acitvity_menu_supporter_main, popup.getMenu());
-        
             } else {
                 inflater.inflate(R.menu.chat_acitvity_menu_supporter, popup.getMenu());
             }
@@ -257,7 +271,7 @@ public class ChatActivity extends ObserverActivity {
                 } else if (menuItem.getItemId() == R.id.addToInbox && TokenContainer.isIsSupporter()) {
                     LoadingDialogFragment loadingDialogFragment = new LoadingDialogFragment();
                     loadingDialogFragment.show(getSupportFragmentManager(), null);
-            
+    
                     viewModel.addTicketToInbox(inputTicket.getTicketId())
                             .subscribeOn(Schedulers.newThread())
                             .observeOn(AndroidSchedulers.mainThread())
@@ -269,6 +283,46 @@ public class ChatActivity extends ObserverActivity {
                                     }
                                 }
                             });
+                } else if (menuItem.getItemId() == R.id.close_ticket && TokenContainer.isIsSupporter()) {
+                    loadingDialogFragment.show(getSupportFragmentManager(), null);
+                    viewModel.closeTicketBySupporter(inputTicket.getTicketId())
+                            .subscribeOn(Schedulers.newThread())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(new MSingleObserver<CloseTicketResponse>(compositeDisposable) {
+                                @Override
+                                public void onSuccess(CloseTicketResponse closeTicketResponse) {
+                                    //TODO:Should Publish the Updated Ticket
+                                    loadingDialogFragment.dismiss();
+                                    inputTicket.setTicketStatus(5);
+                                    chat_message_rl.setVisibility(View.GONE);
+                                    ticket_closed_message_container.setVisibility(View.VISIBLE);
+                                    ticket_closed_message_tv.setText("این تیکت توسط شما بسته شده است");
+                                    chat_option_Iv.setVisibility(View.GONE);
+                                }
+                            });
+                } else if (menuItem.getItemId() == R.id.getOwnerInfo && TokenContainer.isIsSupporter()) {
+                    loadingDialogFragment.show(getSupportFragmentManager(), null);
+                    viewModel.getTicketOwnerInfo(inputTicket.getTicketOwnerId())
+                            .subscribeOn(Schedulers.newThread())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(new MSingleObserver<TicketOwnerInfo>(compositeDisposable) {
+                                @Override
+                                public void onSuccess(@NonNull TicketOwnerInfo ticketOwnerInfo) {
+                                    if (ticketOwnerInfo.isSuccess()) {
+                                        loadingDialogFragment.dismiss();
+                                        String stdName = ticketOwnerInfo.getOwnerInfo().getStudentName() + " " + ticketOwnerInfo.getOwnerInfo().getStudentLastName();
+                                        String stdNationalCode = ticketOwnerInfo.getOwnerInfo().getStudentNationalCode();
+                                        String stdUniversityCode = ticketOwnerInfo.getOwnerInfo().getStudentUniversityCode();
+                                        String stdMajorName = ticketOwnerInfo.getOwnerInfo().getMajorName();
+                                        String stdMajorGrade = ticketOwnerInfo.getOwnerInfo().getGradeName();
+                        
+                                        ShowTicketOwnerInfoDialog showTicketOwnerInfoDialog = ShowTicketOwnerInfoDialog.newInstance(stdName, stdNationalCode, stdUniversityCode, stdMajorName, stdMajorGrade);
+                                        showTicketOwnerInfoDialog.show(getSupportFragmentManager(), null);
+                                    }
+                                }
+                            });
+    
+    
                 }
                 return true;
             });
@@ -279,8 +333,12 @@ public class ChatActivity extends ObserverActivity {
                 MenuUtils.applyFontToMenuItem(mi, ChatActivity.this);
             }
         });
-
-
+    
+        main_hambergur_back_ic.setOnClickListener(view -> {
+            onBackPressed();
+        });
+    
+    
     }
 
     @Override

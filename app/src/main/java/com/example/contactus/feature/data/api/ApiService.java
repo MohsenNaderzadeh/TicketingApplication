@@ -10,6 +10,7 @@ import com.example.contactus.feature.data.entities.MessageListResponse;
 import com.example.contactus.feature.data.entities.RelatedDepartemants;
 import com.example.contactus.feature.data.entities.SubmitNewTicketMessageResponse;
 import com.example.contactus.feature.data.entities.SupporterTicketInboxResponse;
+import com.example.contactus.feature.data.entities.TicketOwnerInfo;
 import com.example.contactus.feature.data.entities.TicketsResponse;
 
 import java.util.List;
@@ -27,15 +28,18 @@ public interface ApiService {
     @POST("User/Login.php")
     @FormUrlEncoded
     Single<LoginResponse> userAuthenticate(@Field("username") String userName, @Field("password") String password);
-
+    
     @POST("Supporter/Login.php")
     @FormUrlEncoded
     Single<LoginResponse> supporterAuthenticate(@Field("username") String userName, @Field("password") String password);
-
-
+    
+    
     @GET("User/GetTicketList.php")
     Single<TicketsResponse> getAllTicketsList();
-
+    
+    @GET("User/GetClosedTicketsList.php")
+    Single<TicketsResponse> getAllClosedTicketsList();
+    
     @GET("User/GetDepartemantList.php")
     Single<List<RelatedDepartemants>> getAllTicketsSubject();
     
@@ -59,12 +63,21 @@ public interface ApiService {
     @FormUrlEncoded
     Single<CloseTicketResponse> closeTicket(@Field("ticketId") int ticketId);
     
+    @POST("Supporter/CloseTicket.php")
+    @FormUrlEncoded
+    Single<CloseTicketResponse> closeTicketBySupporter(@Field("ticketId") int ticketId);
+    
     @GET("Supporter/GetAllInboxTickets.php")
     Single<SupporterTicketInboxResponse> getAllSupporterTicketInbox();
     
+    @GET("Supporter/GetClosedTicketsList.php")
+    Single<SupporterTicketInboxResponse> getAllClosedTicketsSupporter();
     
     @GET("Supporter/GetDepartemantsTicketsList.php")
     Single<DepartemantOpenTicketsResponse> getAll();
+    
+    @GET("Supporter/GetTicketOwnerInfo.php")
+    Single<TicketOwnerInfo> getTicketOwnerInfo(@Query("ownerId") int ownerId);
     
     @PUT("User/LogOut.php")
     Single<LogoutResponse> logoutStudent();

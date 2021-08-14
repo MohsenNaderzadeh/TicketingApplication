@@ -35,4 +35,8 @@ public class TicketListViewModel extends BaseViewModel {
     public void clearSharedPref() {
         localDataSource.clear();
     }
+    
+    public Single<TicketsResponse> getClosedTickets() {
+        return ticketsRepository.getClosedTicketsList();
+    }
 }

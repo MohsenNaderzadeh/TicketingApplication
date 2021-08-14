@@ -170,6 +170,8 @@ public class TicketListAdapter extends RvAdapter<TicketInfo, TicketListAdapter.T
                     return "بسته شده توسط دانشجو";
                 case 5:
                     return "بسته شده توسط اپراتور";
+                case 8:
+                    return "در صندوق پاسخگویی اپراتور";
             }
             return null;
         }

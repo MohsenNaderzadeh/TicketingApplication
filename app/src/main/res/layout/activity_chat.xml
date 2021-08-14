@@ -15,14 +15,17 @@
             android:layout_width="match_parent"
             android:layout_height="56dp"
             android:background="@color/orange_500">
-
+    
             <ImageView
                 android:id="@+id/main_hambergur_back_ic"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:layout_margin="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
                 android:src="@drawable/ic_baseline_back_right_24" />
 
             <TextView
@@ -131,22 +134,11 @@
                     android:maxLines="6"
                     android:textSize="16dp"
                     android:hint="متن تیکت"
-                    android:paddingStart="32dp"
+                    android:paddingStart="12dp"
                     android:paddingTop="8dp"
                     android:paddingEnd="16dp"
                     android:paddingBottom="8dp" />
 
-                <FrameLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="8dp">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_baseline_attach_file_24" />
-                </FrameLayout>
 
             </RelativeLayout>
 

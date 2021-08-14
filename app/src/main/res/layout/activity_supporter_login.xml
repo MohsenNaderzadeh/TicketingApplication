@@ -70,9 +70,9 @@
             android:layout_marginBottom="8dp"
             android:background="@drawable/username_ed_login"
             android:fontFamily="@font/iranyekanbold"
-            android:gravity="start"
+            android:gravity="end"
             android:hint="رمز عبور خود را وارد کنید"
-            android:inputType="number"
+            android:inputType="numberPassword"
             android:padding="16dp" />
 
         <Button

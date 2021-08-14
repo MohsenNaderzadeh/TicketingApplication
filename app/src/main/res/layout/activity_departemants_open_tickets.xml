@@ -15,19 +15,32 @@
             android:layout_width="match_parent"
             android:layout_height="56dp"
             android:background="@color/orange_500">
-            
+    
+            <ImageView
+                android:id="@+id/main_hambergur_back_ic"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:src="@drawable/ic_baseline_back_right_24" />
+    
             <TextView
                 android:id="@+id/main_supporter_departemants_openTickets_toolbar_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
+                android:layout_toLeftOf="@id/main_hambergur_back_ic"
                 android:layout_marginLeft="4dp"
                 android:layout_marginRight="8dp"
                 android:fontFamily="@font/iranyekanbold"
                 android:text="در حال اتصال ..."
                 android:textColor="@android:color/white"
                 android:textSize="18sp" />
+
         </RelativeLayout>
     </com.google.android.material.appbar.AppBarLayout>
     

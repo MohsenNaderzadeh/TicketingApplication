@@ -5,8 +5,6 @@
     <item
         android:id="@+id/addToInbox"
         android:title="اضافه کردن به صندوق پاسخگویی" />
-    <item
-        android:id="@+id/close_ticket"
-        android:title="بستن تیکت" />
+
 
 </menu>

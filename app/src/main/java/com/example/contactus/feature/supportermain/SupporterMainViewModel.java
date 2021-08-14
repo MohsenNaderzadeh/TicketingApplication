@@ -33,4 +33,8 @@ public class SupporterMainViewModel {
     public void clearSharedPref() {
         localDataSource.clear();
     }
+    
+    public Single<SupporterTicketInboxResponse> getClosedTickets() {
+        return supporterTicketsInboxRepo.getAllClosedTickets();
+    }
 }

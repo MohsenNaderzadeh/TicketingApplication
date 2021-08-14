@@ -35,6 +35,7 @@ public class DepartemantsOpenTicketsActivity extends ObserverActivity implements
     private RecyclerViewSkeletonScreen departemantsTicketsViewSkeleton;
     private DepartemantsOpenTicketsViewModel departemantsOpenTicketsViewModel;
     private TextView supporter_departemantsTickets_EmptyState_tv;
+    private View main_hambergur_back_ic;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,7 +82,10 @@ public class DepartemantsOpenTicketsActivity extends ObserverActivity implements
                 .count(10)
                 .shimmer(true)
                 .show();
-        
+        main_hambergur_back_ic = findViewById(R.id.main_hambergur_back_ic);
+    
+        main_hambergur_back_ic.setOnClickListener(view -> onBackPressed());
+    
     }
     
     @Override
@@ -94,7 +98,7 @@ public class DepartemantsOpenTicketsActivity extends ObserverActivity implements
     @Override
     public void setTextofToolbar(ConnectedInternet connectedInternet) {
         super.setTextofToolbar(connectedInternet);
-        updateToolbarText("دانشجویار");
+        updateToolbarText("لیست تیکتهای دپارتمان اداری شما");
     }
     
     @Override
